@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 22:42:53 by ihamani           #+#    #+#             */
-/*   Updated: 2025/03/05 00:22:14 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/05/25 16:51:37 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	parsing(int ac, char **av, t_rules *rules)
 		args_err();
 	rules->number_of_philo = to_int(av[1]);
 	if (!rules->number_of_philo)
-		throw_err("Philosophers number is ranging from 1 to n\n");
+		throw_err("Philosophers number is ranging from 1 to N\n");
 	printf("%d\n", rules->number_of_philo);
 	rules->time_to_die = to_int(av[2]);
 	printf("%d\n", rules->time_to_die);

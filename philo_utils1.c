@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 23:06:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/03/05 01:47:45 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/05/25 16:57:06 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,20 @@ int	ft_atoi(const char *str)
 {
 	int			i;
 	long long	r;
+	long long	max;
 
 	i = 0;
 	r = 0;
+	max = 2147483647;
 	i = skip_ws(str);
 	if (str[i] == '+')
 		i++;
 	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
+	{
+		if (r > (max - (str[i] - '0')) / 10)
+			return (-1);
 		r = (r * 10) + (str[i++] - '0');
+	}
 	i += skip_ws(&str[i]);
 	if (str[i])
 		throw_err("Please provide a valid number\n");
@@ -59,4 +65,3 @@ void	ft_sleep(int micro)
 {
 	usleep(micro * 1000);
 }
-

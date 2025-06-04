@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 23:11:37 by ihamani           #+#    #+#             */
-/*   Updated: 2025/03/05 00:18:56 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/05/25 16:59:55 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,18 @@ static void	check_arg(char *str)
 	{
 		if (((str[i] < '0' && str[i] > '9') && str[i] != ' '
 				&& str[i] != '+'))
-			throw_err(" Please provide a valid number");
+			throw_err(" Please provide a valid number\n");
 		i++;
 	}
 }
 
 int	to_int(char *str)
 {
+	int	n;
+
 	check_arg(str);
-	return (ft_atoi(str));
+	n = ft_atoi(str);
+	if (n == -1)
+		throw_err("Please provide a valid number\n");
+	return (n);
 }

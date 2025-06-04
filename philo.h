@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/03/05 01:47:54 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/02 16:56:39 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ typedef struct s_rules
 	int	time_to_sleep;
 	int	number_of_time_eat;
 }	t_rules;
+
+typedef struct s_philo
+{
+	pthread_t	*thread;
+	void		*r_fork;
+	void		*l_fork;
+	int			time_eat;
+	int			time_die;
+	int			finshed;
+	int			dead;
+	int			id;
+	int			neat;
+}					t_philo;
+
 
 void	parsing(int ac, char **av, t_rules *rules);
 void	ft_putstr_fd(char *str, int fd);
