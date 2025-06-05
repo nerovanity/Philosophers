@@ -21,23 +21,23 @@ static void	args_err()
 	exit(1);
 }
 
-void	parsing(int ac, char **av, t_rules *rules)
+void	parsing(int ac, char **av, t_shared_data *shared_data)
 {
 	if (ac < 5 || ac > 6)
 		args_err();
-	rules->number_of_philo = to_int(av[1]);
-	if (!rules->number_of_philo)
+	shared_data->number_of_philo = to_int(av[1]);
+	if (!shared_data->number_of_philo)
 		throw_err("Philosophers number is ranging from 1 to N\n");
-	printf("%d\n", rules->number_of_philo);
-	rules->time_to_die = to_int(av[2]);
-	printf("%d\n", rules->time_to_die);
-	rules->time_to_eat = to_int(av[3]);
-	printf("%d\n", rules->time_to_eat);
-	rules->time_to_sleep = to_int(av[4]);
-	printf("%d\n", rules->time_to_sleep);
+	printf("%d\n", shared_data->number_of_philo);
+	shared_data->time_to_die = to_int(av[2]);
+	printf("%d\n", shared_data->time_to_die);
+	shared_data->time_to_eat = to_int(av[3]);
+	printf("%d\n", shared_data->time_to_eat);
+	shared_data->time_to_sleep = to_int(av[4]);
+	printf("%d\n", shared_data->time_to_sleep);
 	if (ac == 6)
 	{
-		rules->number_of_time_eat = to_int(av[5]);
-		printf("%d\n", rules->number_of_time_eat);
+		shared_data->number_of_time_eat = to_int(av[5]);
+		printf("%d\n", shared_data->number_of_time_eat);
 	}
 }

@@ -20,30 +20,34 @@
 # include <string.h>
 # include <sys/time.h>
 
-typedef struct s_rules
+typedef struct s_sdata
 {
-	int	number_of_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	number_of_time_eat;
-}	t_rules;
+	int					number_of_philo;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
+	int					number_of_time_eat;
+	pthread_mutex_t		*forks;
+	pthread_t			*tmonitor;
+}	t_sdata;
 
 typedef struct s_philo
 {
-	pthread_t	*thread;
-	void		*r_fork;
-	void		*l_fork;
-	int			time_eat;
-	int			time_die;
-	int			finshed;
-	int			dead;
-	int			id;
-	int			neat;
+	pthread_t			*thread;
+	pthread_mutex_t		*r_fork;
+	pthread_mutex_t		*l_fork;
+	int					finshed;
+	int					dead;
+	int					id;
 }					t_philo;
 
+typedef	struct s_main
+{
+	t_sdata				sdata;
+	t_philo				*philo;
+}				t_main;
 
-void	parsing(int ac, char **av, t_rules *rules);
+void	parsing(int ac, char **av, t_sdata *rules);
 void	ft_putstr_fd(char *str, int fd);
 void	throw_err(char *str);
 int		to_int(char *str);

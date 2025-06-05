@@ -12,53 +12,61 @@
 
 #include "philo.h"
 
-char	*philo_init(t_philo *philo, t_rules rules)
+static	void	init_mutex(t_sdata *sdata)
 {
-	int		i;
-	char	*forks;
+	int i;
 
 	i = 0;
-	forks = malloc(sizeof(char) * (rules.number_of_philo + 1));
-	if (!forks)
+	while (i < sdata->number_of_philo)
+		pthread_mutex_init(&sdata->forks[i++], NULL);
+}
+
+static int	philo_init(t_philo *philo, t_sdata *sdata)
+{
+	int		i;
+
+	i = 0;
+	sdata->forks = malloc(sizeof(pthread_mutex_t) * sdata->number_of_philo);
+	if (!sdata->forks)
+		return (write(2, "Malloc\n", 7), free(philo), 1);
+	memset(sdata->forks, 0, sizeof(pthread_mutex_t) * sdata->number_of_philo);
+	init_mutex(sdata);
+	while (i < sdata->number_of_philo)
 	{
-		perror("malloc");
-		exit(1);
-	}
-	forks[rules.number_of_philo] = '\0';
-	while (i < rules.number_of_philo)
-	{
-		philo[i].time_eat = rules.time_to_eat;
-		philo[i].time_die = rules.time_to_die;
 		philo[i].id = i;
 		philo[i].finshed = 0;
 		philo[i].dead = 0;
-		philo[i].r_fork = &forks[(i + 1) % rules.number_of_philo];
-		philo[i].l_fork = &forks[i];
-		philo[i].neat = 0;
+		philo[i].r_fork = &sdata->forks[(i + 1) % sdata->number_of_philo];
+		philo[i++].l_fork = &sdata->forks[i];
+	}
+	return (0);
+}
+
+static	int philo_exe(t_main *m)
+{
+	int i;
+
+	i = 0;
+	while(i < m->sdata.number_of_philo)
+	{
+		if (pthread_create(m->philo[i].thread, NULL, routing(), m) != 0)
+			return (1);
 		i++;
 	}
-	return (forks);
+	if (pthread_create(m->sdata.tmonitor, NULL, monitoring(), m) != 0)
+			return (1);
 }
 
 int	main(int ac, char **av)
 {
-	t_rules		rules;
-	t_philo		*philo;
-	int			i = 0;
+	t_main	m;
 
-	parsing(ac, av, &rules);
-	philo = malloc(sizeof(t_philo) * rules.number_of_philo);
-	philo_init(philo, rules);
-	while (i < rules.number_of_philo)
-	{
-		printf("Philo %d: time_eat=%d, time_die=%d, finshed=%d, dead=%d, r_fork=%p, l_fork=%p\n",
-			philo[i].id,
-			philo[i].time_eat,
-			philo[i].time_die,
-			philo[i].finshed,
-			philo[i].dead,
-			(void *)philo[i].r_fork,
-			(void *)philo[i].l_fork);
-		i++;
-	}
+	parsing(ac, av, &m.sdata);
+	m.philo = malloc(sizeof(t_philo) * m.sdata.number_of_philo);
+	if (!m.philo)
+		return (write(2, "Malloc\n", 7), 1);
+	memset(m.philo, 0, sizeof(t_philo) * m.sdata.number_of_philo);
+	if (philo_init(m.philo, &m.sdata) == 1)
+		return (1);
+	philo_exe(&m);
 }

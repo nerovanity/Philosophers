@@ -1,5 +1,5 @@
 CC=cc
-FLAGS=-Wall -Wextra -Werror
+FLAGS=-Wall -Wextra -Werror -g -fsanitize=address
 SRC=	philo.c \
 		parsing.c \
 		philo_utils1.c \
@@ -14,7 +14,7 @@ all: $(NAME)
 	@echo $(G) all functions are done
 
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	@$(CC) $(FLAGS) $(OBJ) -o $(NAME)
 
 %.o: %.c philo.h
 	@echo $(Y) compailing file $< ... done
@@ -28,6 +28,6 @@ fclean: clean
 	@echo $(R) "Cleaning $(NAME)"
 	@rm -f $(NAME)
 
-re: fClean all
+re: fclean all
 
 .PHONY: all clean fclean re
