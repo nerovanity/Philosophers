@@ -53,8 +53,6 @@ static	int philo_exe(t_main *m)
 			return (1);
 		i++;
 	}
-	if (pthread_create(m->sdata.tmonitor, NULL, monitoring(), m) != 0)
-			return (1);
 }
 
 int	main(int ac, char **av)
@@ -68,5 +66,6 @@ int	main(int ac, char **av)
 	memset(m.philo, 0, sizeof(t_philo) * m.sdata.number_of_philo);
 	if (philo_init(m.philo, &m.sdata) == 1)
 		return (1);
-	philo_exe(&m);
+	if (philo_exe(&m) != 0)
+		return (1);
 }
