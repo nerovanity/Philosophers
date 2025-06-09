@@ -3,7 +3,8 @@ FLAGS=-Wall -Wextra -Werror -g -fsanitize=address
 SRC=	philo.c \
 		parsing.c \
 		philo_utils1.c \
-		to_int.c
+		philo_utils2.c \
+		to_int.c 
 OBJ=$(SRC:.c=.o)
 G = $(shell tput setaf 2)
 R = $(shell tput setaf 1)

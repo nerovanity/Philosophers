@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/02 16:56:39 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/09 11:58:38 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,17 @@ typedef struct s_sdata
 
 typedef struct s_philo
 {
-	pthread_t			*thread;
+	pthread_t			thread;
 	pthread_mutex_t		*r_fork;
 	pthread_mutex_t		*l_fork;
 	int					finshed;
 	int					dead;
 	int					id;
+	t_sdata				*sdata;
+	int					teat;
 }					t_philo;
 
-typedef	struct s_main
+typedef struct s_main
 {
 	t_sdata				sdata;
 	t_philo				*philo;
@@ -53,5 +55,7 @@ void	throw_err(char *str);
 int		to_int(char *str);
 int		ft_atoi(const char *str);
 void	ft_sleep(int micro);
+size_t	time_getter(int flag);
+void	*routing(void *tmp);
 
 #endif
