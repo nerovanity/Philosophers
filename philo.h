@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/09 11:58:38 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/09 12:50:38 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@
 # include <unistd.h>
 # include <string.h>
 # include <sys/time.h>
+# include <stdbool.h>
 
 typedef struct s_sdata
 {
 	int					number_of_philo;
-	int					time_to_die;
+	size_t				time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					number_of_time_eat;
@@ -38,6 +39,7 @@ typedef struct s_philo
 	pthread_mutex_t		*l_fork;
 	int					finshed;
 	int					dead;
+	size_t				last_eat;
 	int					id;
 	t_sdata				*sdata;
 	int					teat;
@@ -57,5 +59,8 @@ int		ft_atoi(const char *str);
 void	ft_sleep(int micro);
 size_t	time_getter(int flag);
 void	*routing(void *tmp);
+void	*monitoring(void *m);
+bool	check_is_dead(t_philo *philo);
+void	close_threads(t_main *m);
 
 #endif

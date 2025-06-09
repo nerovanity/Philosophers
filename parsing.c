@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 22:42:53 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/09 11:38:15 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/09 12:52:01 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	parsing(int ac, char **av, t_sdata *sdata)
 		throw_err("Philosophers number is ranging from 1 to N\n");
 	printf("%d\n", sdata->number_of_philo);
 	sdata->time_to_die = to_int(av[2]);
-	printf("%d\n", sdata->time_to_die);
+	printf("%zu\n", sdata->time_to_die);
 	sdata->time_to_eat = to_int(av[3]);
 	printf("%d\n", sdata->time_to_eat);
 	sdata->time_to_sleep = to_int(av[4]);

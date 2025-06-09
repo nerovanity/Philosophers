@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:52:45 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/09 11:59:04 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/09 12:58:01 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	eat(t_philo *philo)
 	printf("%ld %d has taken a fork\n", time_getter(1), philo->id + 1);
 	pthread_mutex_lock(philo->l_fork);
 	printf("%ld %d has taken a fork\n", time_getter(1), philo->id + 1);
-	printf("%ld %d is eating\n", time_getter(1), philo->id + 1);
+	philo->last_eat = time_getter(1);
+	printf("%ld %d is eating\n", philo->last_eat, philo->id + 1);
 	ft_sleep(philo->sdata->time_to_eat);
 	philo->teat++;
 	pthread_mutex_unlock(philo->r_fork);
@@ -54,7 +55,9 @@ void	*routing(void *tmp)
 	t_philo	*philo;
 
 	philo = tmp;
-	while (philo->dead != 1 && philo->finshed != 1)
+	printf("thread Number %d\n", philo->id + 1);
+	while (philo->dead == 0 && philo->finshed == 0
+		&& !check_is_dead(philo))
 	{
 		if ((philo->id + 1) % 2 == 0)
 		{
@@ -64,6 +67,7 @@ void	*routing(void *tmp)
 		}
 		else
 		{
+			ft_sleep(philo->sdata->time_to_eat);
 			printf("%ld %d is thinking\n", time_getter(1), philo->id + 1);
 			eat(philo);
 			philo_sleep(philo);
@@ -72,17 +76,22 @@ void	*routing(void *tmp)
 	return (NULL);
 }
 
-// void	monitoring(t_main *m)
-// {
-// 	int	i;
+void	*monitoring(void *tmp)
+{
+	int		i;
+	t_main	*m;
 
-// 	i = 0;
-// 	while (i < m->sdata.number_of_philo)
-// 	{
-// 		sleep(1000);
-// 		if (m->sdata.number_of_time_eat != -1
-// 			&& m->philo[i].teat == m->sdata.number_of_time_eat)
-// 			m->philo[i].finshed = 1;
-// 		i++;
-// 	}
-// }
+	m = tmp;
+	i = 0;
+	while (i < m->sdata.number_of_philo)
+	{
+		sleep(1000);
+		if (m->sdata.number_of_time_eat != -1
+			&& m->philo[i].teat == m->sdata.number_of_time_eat)
+			m->philo[i].finshed = 1;
+		if (m->philo[i].dead)
+			close_threads(m);
+		i++;
+	}
+	return (NULL);
+}

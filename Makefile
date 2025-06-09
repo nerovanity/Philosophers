@@ -4,6 +4,7 @@ SRC=	philo.c \
 		parsing.c \
 		philo_utils1.c \
 		philo_utils2.c \
+		philo_utils3.c \
 		to_int.c 
 OBJ=$(SRC:.c=.o)
 G = $(shell tput setaf 2)

@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:18 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/09 11:58:10 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/09 13:03:28 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static int	philo_init(t_philo *philo, t_sdata *sdata)
 		philo[i].dead = 0;
 		philo[i].r_fork = &sdata->forks[(i + 1) % sdata->number_of_philo];
 		philo[i].l_fork = &sdata->forks[i];
+		philo[i].last_eat = time_getter(1);
 		philo[i].teat = 0;
 		philo[i].sdata = sdata;
 		i++;
@@ -45,12 +46,25 @@ static int	philo_init(t_philo *philo, t_sdata *sdata)
 	return (0);
 }
 
+bool	check_is_dead(t_philo *philo)
+{
+	size_t	n;
+
+	n = time_getter(1);
+	if (n - philo->last_eat > philo->sdata->time_to_die)
+	{
+		printf("%ld %d died\n", time_getter(1), philo->id + 1);
+		philo->dead = 1;
+		return (true);
+	}
+	return (false);
+}
+
 static int	philo_exe(t_main *m)
 {
 	int	i;
 
 	i = 0;
-	time_getter(0);
 	while (i < m->sdata.number_of_philo)
 	{
 		if (pthread_create(&m->philo[i].thread, NULL,
@@ -58,6 +72,9 @@ static int	philo_exe(t_main *m)
 			return (1);
 		i++;
 	}
+	if (pthread_create(&m->philo[i].thread, NULL,
+			monitoring, m) != 0)
+		return (1);
 	return (0);
 }
 
@@ -70,6 +87,7 @@ int	main(int ac, char **av)
 	if (!m.philo)
 		return (write(2, "Malloc\n", 7), 1);
 	memset(m.philo, 0, sizeof(t_philo) * m.sdata.number_of_philo);
+	time_getter(0);
 	if (philo_init(m.philo, &m.sdata) == 1)
 		return (1);
 	if (philo_exe(&m) != 0)
