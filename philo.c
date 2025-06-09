@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:18 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/09 13:03:28 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/09 14:24:17 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int	main(int ac, char **av)
 {
 	t_main	m;
 
-	parsing(ac, av, &m.sdata);
+	if (parsing(ac, av, &m.sdata) == 1)
+		return (1);
 	m.philo = malloc(sizeof(t_philo) * m.sdata.number_of_philo);
 	if (!m.philo)
 		return (write(2, "Malloc\n", 7), 1);

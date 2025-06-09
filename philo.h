@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/09 12:50:38 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/09 14:24:35 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,8 @@ typedef struct s_main
 	t_philo				*philo;
 }				t_main;
 
-void	parsing(int ac, char **av, t_sdata *rules);
+int		parsing(int ac, char **av, t_sdata *rules);
 void	ft_putstr_fd(char *str, int fd);
-void	throw_err(char *str);
 int		to_int(char *str);
 int		ft_atoi(const char *str);
 void	ft_sleep(int micro);

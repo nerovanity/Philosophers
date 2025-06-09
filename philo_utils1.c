@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 23:06:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/05/25 16:57:06 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/09 14:27:41 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@ void	ft_putstr_fd(char *str, int fd)
 	i = 0;
 	while (str[i])
 		write(fd, &str[i++], 1);
-}
-
-void	throw_err(char *str)
-{
-	ft_putstr_fd(str, 2);
-	exit(1);
 }
 
 static int	skip_ws(const char *str)
@@ -57,7 +51,7 @@ int	ft_atoi(const char *str)
 	}
 	i += skip_ws(&str[i]);
 	if (str[i])
-		throw_err("Please provide a valid number\n");
+		return (0);
 	return (r);
 }
 
