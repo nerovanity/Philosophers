@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/09 14:24:35 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/10 11:28:22 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ typedef struct s_sdata
 	int					time_to_sleep;
 	int					number_of_time_eat;
 	pthread_mutex_t		*forks;
+	pthread_mutex_t		is_dead;
+	pthread_mutex_t		meals;
+	pthread_mutex_t		print;
+	pthread_mutex_t		loop_check;
+	bool				died;
 	pthread_t			*tmonitor;
 }	t_sdata;
 
@@ -47,6 +52,7 @@ typedef struct s_philo
 
 typedef struct s_main
 {
+	pthread_t			monitor;
 	t_sdata				sdata;
 	t_philo				*philo;
 }				t_main;
@@ -61,5 +67,7 @@ void	*routing(void *tmp);
 void	*monitoring(void *m);
 bool	check_is_dead(t_philo *philo);
 void	close_threads(t_main *m);
+void	eat_odd(t_philo *philo);
+bool	loop_check(t_philo *philo);
 
 #endif

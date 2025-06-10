@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:18 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/09 14:24:17 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/10 11:29:40 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ static	void	init_mutex(t_sdata *sdata)
 	i = 0;
 	while (i < sdata->number_of_philo)
 		pthread_mutex_init(&sdata->forks[i++], NULL);
+	pthread_mutex_init(&sdata->is_dead, NULL);
+	pthread_mutex_init(&sdata->meals, NULL);
+	pthread_mutex_init(&sdata->print, NULL);
+	pthread_mutex_init(&sdata->loop_check, NULL);
 }
 
 static int	philo_init(t_philo *philo, t_sdata *sdata)
@@ -48,13 +52,22 @@ static int	philo_init(t_philo *philo, t_sdata *sdata)
 
 bool	check_is_dead(t_philo *philo)
 {
-	size_t	n;
+	size_t			n;
 
 	n = time_getter(1);
+	pthread_mutex_lock(&philo->sdata->is_dead);
+	if (philo->sdata->died || philo->dead == 1)
+		return (true);
+	pthread_mutex_unlock(&philo->sdata->is_dead);
 	if (n - philo->last_eat > philo->sdata->time_to_die)
 	{
+		pthread_mutex_lock(&philo->sdata->print);
 		printf("%ld %d died\n", time_getter(1), philo->id + 1);
+		pthread_mutex_unlock(&philo->sdata->print);
+		pthread_mutex_lock(&philo->sdata->is_dead);
 		philo->dead = 1;
+		philo->sdata->died = true;
+		pthread_mutex_unlock(&philo->sdata->is_dead);
 		return (true);
 	}
 	return (false);
@@ -72,7 +85,7 @@ static int	philo_exe(t_main *m)
 			return (1);
 		i++;
 	}
-	if (pthread_create(&m->philo[i].thread, NULL,
+	if (pthread_create(&m->monitor, NULL,
 			monitoring, m) != 0)
 		return (1);
 	return (0);
@@ -93,4 +106,5 @@ int	main(int ac, char **av)
 		return (1);
 	if (philo_exe(&m) != 0)
 		return (1);
+	close_threads(&m);
 }
