@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 12:45:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/10 15:08:50 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/11 14:35:04 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,10 @@ void	close_threads(t_main *m)
 void	eat_odd(t_philo *philo)
 {
 	pthread_mutex_lock(philo->r_fork);
-	pthread_mutex_lock(&philo->sdata->print);
-	printf("%ld %d has taken a fork\n", time_getter(1), philo->id + 1);
-	pthread_mutex_unlock(&philo->sdata->print);
+	print_eat_fork(philo, 1);
 	pthread_mutex_lock(philo->l_fork);
-	pthread_mutex_lock(&philo->sdata->print);
-	printf("%ld %d has taken a fork\n", time_getter(1), philo->id + 1);
-	pthread_mutex_unlock(&philo->sdata->print);
-	pthread_mutex_lock(&philo->sdata->print);
-	printf("%ld %d is eating\n", philo->last_eat, philo->id + 1);
-	pthread_mutex_unlock(&philo->sdata->print);
+	print_eat_fork(philo, 1);
+	print_eat_fork(philo, 0);
 	pthread_mutex_lock(&philo->sdata->meals);
 	philo->last_eat = time_getter(1);
 	philo->teat++;
@@ -55,4 +49,27 @@ bool	loop_check(t_philo *philo)
 	if (philo->finshed == 0 && philo->dead == 0 && !check_is_dead(philo))
 		flag = false;
 	return (flag);
+}
+
+void	print_eat_fork(t_philo *philo, int flag)
+{
+	if (!flag)
+	{
+		pthread_mutex_lock(&philo->sdata->print);
+		printf("%ld %d is eating\n", time_getter(1), philo->id + 1);
+		pthread_mutex_unlock(&philo->sdata->print);
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->sdata->print);
+		printf("%ld %d has taken a fork\n", time_getter(1), philo->id + 1);
+		pthread_mutex_unlock(&philo->sdata->print);
+	}
+}
+
+void	print_think(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->sdata->print);
+	printf("%ld %d is thinking\n", time_getter(1), philo->id + 1);
+	pthread_mutex_unlock(&philo->sdata->print);
 }
