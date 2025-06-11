@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/11 14:36:18 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/11 14:54:08 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	*routing(void *tmp);
 void	*monitoring(void *m);
 bool	check_is_dead(t_philo *philo);
 void	close_threads(t_main *m);
-void	eat_odd(t_philo *philo);
+bool	eat_odd(t_philo *philo);
 bool	loop_check(t_philo *philo);
 void	print_think(t_philo *philo);
 void	print_eat_fork(t_philo *philo, int flag);

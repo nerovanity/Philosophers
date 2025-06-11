@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 12:45:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/11 14:35:04 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/11 15:08:38 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,27 @@ void	close_threads(t_main *m)
 	pthread_join(m->monitor, 0);
 }
 
-void	eat_odd(t_philo *philo)
+bool	eat_odd(t_philo *philo)
 {
 	pthread_mutex_lock(philo->r_fork);
+	if (check_is_dead(philo))
+		return (false);
 	print_eat_fork(philo, 1);
 	pthread_mutex_lock(philo->l_fork);
+	if (check_is_dead(philo))
+		return (false);
 	print_eat_fork(philo, 1);
-	print_eat_fork(philo, 0);
 	pthread_mutex_lock(&philo->sdata->meals);
 	philo->last_eat = time_getter(1);
+	print_eat_fork(philo, 0);
 	philo->teat++;
 	pthread_mutex_unlock(&philo->sdata->meals);
+	if (check_is_dead(philo))
+		return (false);
 	ft_sleep(philo->sdata->time_to_eat);
 	pthread_mutex_unlock(philo->r_fork);
 	pthread_mutex_unlock(philo->l_fork);
+	return (true);
 }
 
 bool	loop_check(t_philo *philo)
@@ -56,7 +63,7 @@ void	print_eat_fork(t_philo *philo, int flag)
 	if (!flag)
 	{
 		pthread_mutex_lock(&philo->sdata->print);
-		printf("%ld %d is eating\n", time_getter(1), philo->id + 1);
+		printf("%ld %d is eating\n", philo->last_eat, philo->id + 1);
 		pthread_mutex_unlock(&philo->sdata->print);
 	}
 	else

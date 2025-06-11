@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:52:45 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/11 14:40:06 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/11 15:15:11 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	eat_even(t_philo *philo)
 	print_eat_fork(philo, 1);
 	pthread_mutex_lock(philo->r_fork);
 	print_eat_fork(philo, 1);
-	print_eat_fork(philo, 0);
 	pthread_mutex_lock(&philo->sdata->meals);
 	philo->last_eat = time_getter(1);
+	print_eat_fork(philo, 0);
 	philo->teat++;
 	pthread_mutex_unlock(&philo->sdata->meals);
 	ft_sleep(philo->sdata->time_to_eat);
@@ -63,14 +63,21 @@ void	*routing(void *tmp)
 		if ((philo->id + 1) % 2 == 0)
 		{
 			eat_even(philo);
+			if (check_is_dead(philo))
+				break ;
 			philo_sleep(philo);
+			if (check_is_dead(philo))
+				break ;
 			print_think(philo);
 		}
 		else
 		{
 			print_think(philo);
-			ft_sleep(20);
-			eat_odd(philo);
+			ft_sleep(1);
+			if (!eat_odd(philo))
+				break ;
+			if (check_is_dead(philo))
+				break ;
 			philo_sleep(philo);
 		}
 	}
