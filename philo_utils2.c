@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:52:45 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/11 15:15:11 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/12 17:08:45 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,16 @@ size_t	time_getter(int flag)
 		return (now_ms - start_time);
 }
 
-void	eat_even(t_philo *philo)
+bool	eat_even(t_philo *philo)
 {
 	pthread_mutex_lock(philo->l_fork);
+	if (check_is_dead(philo))
+		return (pthread_mutex_unlock(philo->l_fork), false);
 	print_eat_fork(philo, 1);
 	pthread_mutex_lock(philo->r_fork);
+	if (check_is_dead(philo))
+		return (pthread_mutex_unlock(philo->l_fork),
+			pthread_mutex_unlock(philo->r_fork), false);
 	print_eat_fork(philo, 1);
 	pthread_mutex_lock(&philo->sdata->meals);
 	philo->last_eat = time_getter(1);
@@ -41,16 +46,25 @@ void	eat_even(t_philo *philo)
 	philo->teat++;
 	pthread_mutex_unlock(&philo->sdata->meals);
 	ft_sleep(philo->sdata->time_to_eat);
+	if (check_is_dead(philo))
+		return (pthread_mutex_unlock(philo->l_fork),
+			pthread_mutex_unlock(philo->r_fork), false);
 	pthread_mutex_unlock(philo->l_fork);
 	pthread_mutex_unlock(philo->r_fork);
+	return (true);
 }
 
-void	philo_sleep(t_philo *philo)
+bool	philo_sleep(t_philo *philo)
 {
+	if (check_is_dead(philo))
+		return (false);
 	pthread_mutex_lock(&philo->sdata->print);
 	printf("%ld %d is sleeping\n", time_getter(1), philo->id + 1);
 	pthread_mutex_unlock(&philo->sdata->print);
+	if (check_is_dead(philo))
+		return (false);
 	ft_sleep(philo->sdata->time_to_sleep);
+	return (true);
 }
 
 void	*routing(void *tmp)
@@ -62,10 +76,10 @@ void	*routing(void *tmp)
 	{
 		if ((philo->id + 1) % 2 == 0)
 		{
-			eat_even(philo);
-			if (check_is_dead(philo))
+			if (!eat_even(philo))
 				break ;
-			philo_sleep(philo);
+			if (!philo_sleep(philo))
+				break ;
 			if (check_is_dead(philo))
 				break ;
 			print_think(philo);

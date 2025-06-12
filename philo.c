@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:18 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/11 14:43:52 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/12 16:58:41 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,16 @@ bool	check_is_dead(t_philo *philo)
 {
 	size_t			n;
 
-	n = time_getter(1);
+	pthread_mutex_lock(&philo->sdata->meals);
+	n = time_getter(1) - philo->last_eat;
+	pthread_mutex_unlock(&philo->sdata->meals);
 	pthread_mutex_lock(&philo->sdata->is_dead);
 	if (philo->sdata->died || philo->dead == 1)
 	{
 		pthread_mutex_unlock(&philo->sdata->is_dead);
 		return (true);
 	}
-	if (n - philo->last_eat > philo->sdata->time_to_die)
+	if (n > philo->sdata->time_to_die)
 	{
 		pthread_mutex_lock(&philo->sdata->print);
 		printf("%ld %d died\n", time_getter(1), philo->id + 1);
@@ -80,6 +82,9 @@ static int	philo_exe(t_main *m)
 	int	i;
 
 	i = 0;
+	if (pthread_create(&m->monitor, NULL,
+			monitoring, m) != 0)
+		return (1);
 	while (i < m->sdata.number_of_philo)
 	{
 		if (pthread_create(&m->philo[i].thread, NULL,
@@ -87,9 +92,6 @@ static int	philo_exe(t_main *m)
 			return (1);
 		i++;
 	}
-	if (pthread_create(&m->monitor, NULL,
-			monitoring, m) != 0)
-		return (1);
 	return (0);
 }
 

@@ -7,28 +7,21 @@ SRC=	philo.c \
 		philo_utils3.c \
 		to_int.c 
 OBJ=$(SRC:.c=.o)
-G = $(shell tput setaf 2)
-R = $(shell tput setaf 1)
-Y = $(shell tput setaf 3)
 NAME= philo
 
 all: $(NAME)
-	@echo $(G) all functions are done
 
 $(NAME): $(OBJ)
-	@$(CC) $(FLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
 
 %.o: %.c philo.h
-	@echo $(Y) compailing file $< ... done
-	@$(CC) $(FLAGS) -c $< -o $@
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	@echo $(R) "Cleaning objects"
-	@rm -f $(OBJ)
+	rm -f $(OBJ)
 
 fclean: clean
-	@echo $(R) "Cleaning $(NAME)"
-	@rm -f $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
 

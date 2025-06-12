@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 12:45:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/11 15:08:38 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/12 17:07:56 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ bool	eat_odd(t_philo *philo)
 {
 	pthread_mutex_lock(philo->r_fork);
 	if (check_is_dead(philo))
-		return (false);
+		return (pthread_mutex_unlock(philo->r_fork), false);
 	print_eat_fork(philo, 1);
 	pthread_mutex_lock(philo->l_fork);
 	if (check_is_dead(philo))
-		return (false);
+		return (pthread_mutex_unlock(philo->l_fork), false);
 	print_eat_fork(philo, 1);
 	pthread_mutex_lock(&philo->sdata->meals);
 	philo->last_eat = time_getter(1);
@@ -41,7 +41,8 @@ bool	eat_odd(t_philo *philo)
 	philo->teat++;
 	pthread_mutex_unlock(&philo->sdata->meals);
 	if (check_is_dead(philo))
-		return (false);
+		return (pthread_mutex_unlock(philo->r_fork),
+			pthread_mutex_unlock(philo->l_fork), false);
 	ft_sleep(philo->sdata->time_to_eat);
 	pthread_mutex_unlock(philo->r_fork);
 	pthread_mutex_unlock(philo->l_fork);
