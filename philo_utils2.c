@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:52:45 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/12 17:08:45 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/12 18:07:37 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	*routing(void *tmp)
 		else
 		{
 			print_think(philo);
-			ft_sleep(1);
+			usleep(10);
 			if (!eat_odd(philo))
 				break ;
 			if (check_is_dead(philo))

@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 23:06:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/09 14:27:41 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/12 18:06:47 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@ int	ft_atoi(const char *str)
 	return (r);
 }
 
-void	ft_sleep(int micro)
+void	ft_sleep(size_t micro)
 {
-	usleep(micro * 1000);
+	size_t	start;
+
+	start = time_getter(1) * 1000;
+	while ((time_getter(1) * 1000) - start < micro * 1000)
+		usleep(100);
 }

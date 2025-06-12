@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/11 14:54:08 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/12 18:06:15 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		parsing(int ac, char **av, t_sdata *rules);
 void	ft_putstr_fd(char *str, int fd);
 int		to_int(char *str);
 int		ft_atoi(const char *str);
-void	ft_sleep(int micro);
+void	ft_sleep(size_t micro);
 size_t	time_getter(int flag);
 void	*routing(void *tmp);
 void	*monitoring(void *m);
