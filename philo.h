@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/13 15:24:05 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/13 18:23:09 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct s_sdata
 	pthread_mutex_t		print;
 	pthread_mutex_t		loop_check;
 	bool				died;
-	pthread_t			*tmonitor;
 }	t_sdata;
 
 typedef struct s_philo

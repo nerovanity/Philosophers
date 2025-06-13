@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 12:45:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/13 15:23:46 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/13 17:43:17 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ bool	philo_sleep(t_philo *philo)
 	pthread_mutex_lock(&philo->sdata->print);
 	printf("%ld %d is sleeping\n", time_getter(1), philo->id + 1);
 	pthread_mutex_unlock(&philo->sdata->print);
-	if (check_is_dead(philo))
-		return (false);
 	ft_sleep(philo->sdata->time_to_sleep, philo);
 	return (true);
 }
