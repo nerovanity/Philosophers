@@ -5,7 +5,8 @@ SRC=	philo.c \
 		philo_utils1.c \
 		philo_utils2.c \
 		philo_utils3.c \
-		to_int.c 
+		to_int.c \
+		routing.c
 OBJ=$(SRC:.c=.o)
 NAME= philo
 

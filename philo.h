@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/12 18:06:15 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/13 15:24:05 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		parsing(int ac, char **av, t_sdata *rules);
 void	ft_putstr_fd(char *str, int fd);
 int		to_int(char *str);
 int		ft_atoi(const char *str);
-void	ft_sleep(size_t micro);
+void	ft_sleep(size_t micro, t_philo *philo);
 size_t	time_getter(int flag);
 void	*routing(void *tmp);
 void	*monitoring(void *m);
@@ -71,5 +71,6 @@ bool	eat_odd(t_philo *philo);
 bool	loop_check(t_philo *philo);
 void	print_think(t_philo *philo);
 void	print_eat_fork(t_philo *philo, int flag);
+bool	philo_sleep(t_philo *philo);
 
 #endif

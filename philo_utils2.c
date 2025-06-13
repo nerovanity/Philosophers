@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:52:45 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/12 18:07:37 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/13 15:18:44 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,75 +29,6 @@ size_t	time_getter(int flag)
 		return (now_ms - start_time);
 }
 
-bool	eat_even(t_philo *philo)
-{
-	pthread_mutex_lock(philo->l_fork);
-	if (check_is_dead(philo))
-		return (pthread_mutex_unlock(philo->l_fork), false);
-	print_eat_fork(philo, 1);
-	pthread_mutex_lock(philo->r_fork);
-	if (check_is_dead(philo))
-		return (pthread_mutex_unlock(philo->l_fork),
-			pthread_mutex_unlock(philo->r_fork), false);
-	print_eat_fork(philo, 1);
-	pthread_mutex_lock(&philo->sdata->meals);
-	philo->last_eat = time_getter(1);
-	print_eat_fork(philo, 0);
-	philo->teat++;
-	pthread_mutex_unlock(&philo->sdata->meals);
-	ft_sleep(philo->sdata->time_to_eat);
-	if (check_is_dead(philo))
-		return (pthread_mutex_unlock(philo->l_fork),
-			pthread_mutex_unlock(philo->r_fork), false);
-	pthread_mutex_unlock(philo->l_fork);
-	pthread_mutex_unlock(philo->r_fork);
-	return (true);
-}
-
-bool	philo_sleep(t_philo *philo)
-{
-	if (check_is_dead(philo))
-		return (false);
-	pthread_mutex_lock(&philo->sdata->print);
-	printf("%ld %d is sleeping\n", time_getter(1), philo->id + 1);
-	pthread_mutex_unlock(&philo->sdata->print);
-	if (check_is_dead(philo))
-		return (false);
-	ft_sleep(philo->sdata->time_to_sleep);
-	return (true);
-}
-
-void	*routing(void *tmp)
-{
-	t_philo	*philo;
-
-	philo = tmp;
-	while (!loop_check(philo))
-	{
-		if ((philo->id + 1) % 2 == 0)
-		{
-			if (!eat_even(philo))
-				break ;
-			if (!philo_sleep(philo))
-				break ;
-			if (check_is_dead(philo))
-				break ;
-			print_think(philo);
-		}
-		else
-		{
-			print_think(philo);
-			usleep(10);
-			if (!eat_odd(philo))
-				break ;
-			if (check_is_dead(philo))
-				break ;
-			philo_sleep(philo);
-		}
-	}
-	return (NULL);
-}
-
 void	*monitoring(void *tmp)
 {
 	int		i;
@@ -109,7 +40,7 @@ void	*monitoring(void *tmp)
 		i = 0;
 		while (i < m->sdata.number_of_philo)
 		{
-			ft_sleep(10);
+			ft_sleep(10, &m->philo[i]);
 			if (check_is_dead(&m->philo[i]))
 				return (NULL);
 			pthread_mutex_lock(&m->sdata.meals);

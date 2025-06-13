@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 23:11:37 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/09 14:28:08 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/13 15:26:09 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	check_arg(char *str)
 				&& str[i] != '+'))
 		{
 			ft_putstr_fd(" Please provide a valid number\n", 2);
-			return (1);		
+			return (1);
 		}
 		i++;
 	}
