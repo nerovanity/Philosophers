@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 12:45:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/13 17:43:17 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/14 09:37:31 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,6 @@ void	close_threads(t_main *m)
 		i++;
 	}
 	pthread_join(m->monitor, 0);
-}
-
-bool	loop_check(t_philo *philo)
-{
-	bool	flag;
-
-	flag = true;
-	if (philo->finshed == 0 && philo->dead == 0 && !check_is_dead(philo))
-		flag = false;
-	return (flag);
 }
 
 void	print_eat_fork(t_philo *philo, int flag)

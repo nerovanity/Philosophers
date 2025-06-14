@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:52:45 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/13 18:35:56 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/14 09:53:25 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,13 @@ void	*monitoring(void *tmp)
 		i = 0;
 		while (i < m->sdata.number_of_philo)
 		{
-			ft_sleep(1, &m->philo[i]);
-			if (check_is_dead(&m->philo[i]) || check_all_finished(m->philo))
+			usleep(1000);
+			if (check_is_dead(&m->philo[i]))
 				return (NULL);
+			if (check_all_finished(m->philo))
+				return (m->sdata.all_finished = 1, NULL);
 			pthread_mutex_lock(&m->sdata.meals);
-			if (m->sdata.number_of_time_eat != 0
+			if (m->sdata.number_of_time_eat > 0
 				&& m->philo[i].teat == m->sdata.number_of_time_eat)
 				m->philo[i].finshed = 1;
 			pthread_mutex_unlock(&m->sdata.meals);

@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:17:36 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/13 18:32:34 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/14 13:43:17 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,10 @@ void	routing_even(t_philo *philo)
 		return ;
 	if (!philo_sleep(philo))
 		return ;
-	if (check_is_dead(philo) || philo->finshed)
+	if (check_is_dead(philo))
 		return ;
 	print_think(philo);
+	usleep(300);
 }
 
 void	routing_odd(t_philo *philo)
@@ -79,7 +80,7 @@ void	routing_odd(t_philo *philo)
 		return ;
 	if (!philo_sleep(philo))
 		return ;
-	if (check_is_dead(philo) || philo->finshed)
+	if (check_is_dead(philo))
 		return ;
 	print_think(philo);
 }
@@ -95,7 +96,7 @@ void	*routing(void *tmp)
 		usleep(100);
 	}
 	print_think(philo);
-	while (!loop_check(philo))
+	while (!philo->sdata->all_finished && !check_is_dead(philo))
 	{
 		if ((philo->id + 1) % 2 == 0)
 			routing_even(philo);
