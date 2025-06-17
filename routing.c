@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:17:36 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/14 13:43:17 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/17 13:56:28 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ bool	eat_odd(t_philo *philo)
 	return (true);
 }
 
-void	routing_even(t_philo *philo)
+void	routine_even(t_philo *philo)
 {
 	if (!eat_even(philo))
 		return ;
@@ -71,10 +71,9 @@ void	routing_even(t_philo *philo)
 	if (check_is_dead(philo))
 		return ;
 	print_think(philo);
-	usleep(300);
 }
 
-void	routing_odd(t_philo *philo)
+void	routine_odd(t_philo *philo)
 {
 	if (!eat_odd(philo))
 		return ;
@@ -85,23 +84,28 @@ void	routing_odd(t_philo *philo)
 	print_think(philo);
 }
 
-void	*routing(void *tmp)
+void	*routine(void *tmp)
 {
 	t_philo	*philo;
+	int		is_finished;
 
 	philo = tmp;
+	is_finished = 0;
 	if ((philo->id + 1) % 2 != 0)
 	{
 		print_think(philo);
 		usleep(100);
 	}
 	print_think(philo);
-	while (!philo->sdata->all_finished && !check_is_dead(philo))
+	while (!is_finished && !check_is_dead(philo))
 	{
 		if ((philo->id + 1) % 2 == 0)
-			routing_even(philo);
+			routine_even(philo);
 		else
-			routing_odd(philo);
+			routine_odd(philo);
+		pthread_mutex_lock(&philo->sdata->finished);
+		is_finished = philo->sdata->all_finished;
+		pthread_mutex_unlock(&philo->sdata->finished);
 	}
 	return (NULL);
 }

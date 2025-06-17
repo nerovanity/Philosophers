@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/14 09:52:59 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/17 14:10:54 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_sdata
 	pthread_mutex_t		is_dead;
 	pthread_mutex_t		meals;
 	pthread_mutex_t		print;
+	pthread_mutex_t		finished;
 	pthread_mutex_t		loop_check;
 	bool				died;
 }	t_sdata;
@@ -63,7 +64,7 @@ int		to_int(char *str);
 int		ft_atoi(const char *str);
 void	ft_sleep(size_t micro, t_philo *philo);
 size_t	time_getter(int flag);
-void	*routing(void *tmp);
+void	*routine(void *tmp);
 void	*monitoring(void *m);
 bool	check_is_dead(t_philo *philo);
 void	close_threads(t_main *m);
@@ -72,5 +73,8 @@ void	print_think(t_philo *philo);
 void	print_eat_fork(t_philo *philo, int flag);
 bool	philo_sleep(t_philo *philo);
 bool	check_all_finished(t_philo *philo);
+void	*s_case(void *m);
+void	free_all(t_main *m);
+void	destroting_mutexs(t_main *m);
 
 #endif

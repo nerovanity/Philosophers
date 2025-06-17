@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:52:45 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/14 09:53:25 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/17 14:10:32 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ void	*monitoring(void *tmp)
 			if (check_is_dead(&m->philo[i]))
 				return (NULL);
 			if (check_all_finished(m->philo))
-				return (m->sdata.all_finished = 1, NULL);
+				return (pthread_mutex_lock(&m->sdata.finished),
+					m->sdata.all_finished = 1,
+					pthread_mutex_unlock(&m->sdata.finished), NULL);
 			pthread_mutex_lock(&m->sdata.meals);
 			if (m->sdata.number_of_time_eat > 0
 				&& m->philo[i].teat == m->sdata.number_of_time_eat)
@@ -70,4 +72,22 @@ void	*monitoring(void *tmp)
 		}
 	}
 	return (NULL);
+}
+
+void	*s_case(void *tmp)
+{
+	t_main	*m;
+
+	m = tmp;
+	pthread_mutex_lock(m->philo->r_fork);
+	print_eat_fork(m->philo, 1);
+	if (check_is_dead(m->philo))
+		return (pthread_mutex_unlock(m->philo->r_fork), NULL);
+	return (NULL);
+}
+
+void	free_all(t_main *m)
+{
+	free(m->sdata.forks);
+	free(m->philo);
 }

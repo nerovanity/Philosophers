@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:18 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/14 09:36:20 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/17 14:15:54 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static	void	init_mutex(t_sdata *sdata)
 	pthread_mutex_init(&sdata->meals, NULL);
 	pthread_mutex_init(&sdata->print, NULL);
 	pthread_mutex_init(&sdata->loop_check, NULL);
+	pthread_mutex_init(&sdata->finished, NULL);
 }
 
 static int	philo_init(t_philo *philo, t_sdata *sdata)
@@ -54,8 +55,6 @@ bool	check_is_dead(t_philo *philo)
 {
 	size_t			n;
 
-	if ((philo->id + 1) % 2 != 0)
-		usleep(200);
 	pthread_mutex_lock(&philo->sdata->meals);
 	n = time_getter(1) - philo->last_eat;
 	pthread_mutex_unlock(&philo->sdata->meals);
@@ -87,12 +86,20 @@ static int	philo_exe(t_main *m)
 	if (pthread_create(&m->monitor, NULL,
 			monitoring, m) != 0)
 		return (1);
-	while (i < m->sdata.number_of_philo)
+	if (m->sdata.number_of_philo == 1)
 	{
-		if (pthread_create(&m->philo[i].thread, NULL,
-				routing, &m->philo[i]) != 0)
+		if (pthread_create(&m->philo->thread, NULL, s_case, m) != 0)
 			return (1);
-		i++;
+	}
+	else
+	{
+		while (i < m->sdata.number_of_philo)
+		{
+			if (pthread_create(&m->philo[i].thread, NULL,
+					routine, &m->philo[i]) != 0)
+				return (1);
+			i++;
+		}
 	}
 	return (0);
 }
@@ -109,8 +116,10 @@ int	main(int ac, char **av)
 	memset(m.philo, 0, sizeof(t_philo) * m.sdata.number_of_philo);
 	time_getter(0);
 	if (philo_init(m.philo, &m.sdata) == 1)
-		return (1);
+		return (free(m.philo), 1);
 	if (philo_exe(&m) != 0)
-		return (1);
+		return (free_all(&m), destroting_mutexs(&m), 1);
 	close_threads(&m);
+	destroting_mutexs(&m);
+	free_all(&m);
 }

@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 12:45:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/14 09:37:31 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/17 14:10:48 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	close_threads(t_main *m)
 
 void	print_eat_fork(t_philo *philo, int flag)
 {
+	if (philo->sdata->died)
+		return ;
 	if (!flag)
 	{
 		pthread_mutex_lock(&philo->sdata->print);
@@ -59,4 +61,18 @@ void	print_think(t_philo *philo)
 	pthread_mutex_lock(&philo->sdata->print);
 	printf("%ld %d is thinking\n", time_getter(1), philo->id + 1);
 	pthread_mutex_unlock(&philo->sdata->print);
+}
+
+void	destroting_mutexs(t_main *m)
+{
+	int	i;
+
+	i = 0;
+	while (i < m->sdata.number_of_philo)
+		pthread_mutex_destroy(&m->sdata.forks[i++]);
+	pthread_mutex_destroy(&m->sdata.is_dead);
+	pthread_mutex_destroy(&m->sdata.meals);
+	pthread_mutex_destroy(&m->sdata.print);
+	pthread_mutex_destroy(&m->sdata.loop_check);
+	pthread_mutex_destroy(&m->sdata.finished);
 }
