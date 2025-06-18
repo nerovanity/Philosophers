@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:18 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/17 14:15:54 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/18 14:26:00 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	philo_init(t_philo *philo, t_sdata *sdata)
 	i = 0;
 	sdata->forks = malloc(sizeof(pthread_mutex_t) * sdata->number_of_philo);
 	if (!sdata->forks)
-		return (write(2, "Malloc\n", 7), free(philo), 1);
+		return (write(2, "Malloc\n", 7), 1);
 	memset(sdata->forks, 0, sizeof(pthread_mutex_t) * sdata->number_of_philo);
 	init_mutex(sdata);
 	while (i < sdata->number_of_philo)
@@ -118,7 +118,8 @@ int	main(int ac, char **av)
 	if (philo_init(m.philo, &m.sdata) == 1)
 		return (free(m.philo), 1);
 	if (philo_exe(&m) != 0)
-		return (free_all(&m), destroting_mutexs(&m), 1);
+		return (close_threads(&m), free_all(&m),
+			destroting_mutexs(&m), 1);
 	close_threads(&m);
 	destroting_mutexs(&m);
 	free_all(&m);
