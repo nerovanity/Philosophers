@@ -30,16 +30,15 @@ int	parsing(int ac, char **av, t_sdata *sdata)
 	sdata->time_to_die = to_int(av[2]);
 	sdata->time_to_eat = to_int(av[3]);
 	sdata->time_to_sleep = to_int(av[4]);
-	sdata->died = false;
-	sdata->all_finished = 0;
-	if (!sdata->time_to_die || !sdata->time_to_die
-		|| !sdata->time_to_sleep)
+	if (sdata->time_to_die <= 0 || sdata->time_to_die <= 0
+		|| sdata->time_to_sleep <= 0)
 		return (ft_putstr_fd("not a valid arguments\n", 2), 1);
 	if (ac == 6)
 	{
 		sdata->number_of_time_eat = to_int(av[5]);
-		if (!sdata->number_of_time_eat)
+		if (sdata->number_of_time_eat <= 0)
 			return (ft_putstr_fd("not a valid arguments\n", 2), 1);
 	}
+	return (0);
 	return (0);
 }

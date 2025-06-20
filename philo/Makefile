@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC=cc
-FLAGS=-Wall -Wextra -Werror -g -fsanitize=thread
+FLAGS=-Wall -Wextra -Werror #-g -fsanitize=thread
 SRC=	philo.c \
 		parsing.c \
 		philo_utils1.c \
