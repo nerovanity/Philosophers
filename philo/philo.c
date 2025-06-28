@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:18 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 10:34:44 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 14:09:38 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,22 +92,23 @@ static int	philo_exe(t_main *m)
 	int	i;
 
 	i = 0;
-	if (pthread_create(&m->monitor, NULL,
-			monitoring, m) != 0)
-		return (1);
 	if (m->sdata.number_of_philo == 1)
 	{
 		if (pthread_create(&m->philo->thread, NULL, s_case, m) != 0)
-		{
-			m->failed = 1;
-			pthread_join(m->monitor, 0);
-			return (1);
-		}
+			return (pthread_join(m->monitor, 0), 1);
 	}
 	else
 	{
 		if (ext_philo_exe(m) == 1)
 			return (1);
+	}
+	if (pthread_create(&m->monitor, NULL,
+			monitoring, m) != 0)
+	{
+		i = 0;
+		while (i < m->sdata.number_of_philo)
+			pthread_join(m->philo[i++].thread, 0);
+		return (1);
 	}
 	return (0);
 }
@@ -126,8 +127,7 @@ int	main(int ac, char **av)
 	if (philo_init(m.philo, &m.sdata) == 1)
 		return (free(m.philo), 1);
 	if (philo_exe(&m) != 0)
-		return (close_threads(&m), free_all(&m),
-			destroting_mutexs(&m), 1);
+		return (free_all(&m), destroting_mutexs(&m), 1);
 	close_threads(&m);
 	destroting_mutexs(&m);
 	free_all(&m);

@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:30:32 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/22 10:15:24 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 10:47:55 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,13 @@ static int	exe_philos(t_main *m)
 
 static	int	init_sem(t_main *m)
 {
-	m->sems.forks = sem_open("forks", O_CREAT, 0, m->sdata.number_of_philo);
-	m->sems.print = sem_open("print", O_CREAT);
+	m->sems.forks = sem_open("sem_forks", O_CREAT, 0,
+			0644, m->sdata.number_of_philo);
+	m->sems.print = sem_open("sem_print", O_CREAT);
+	m->sems.is_dead = sem_open("sem_is_dead", O_CREAT, 0,
+			0644, m->sdata.number_of_philo);
+	sem_unlink("sem_forks");
+	sem_unlink("sem_print");
 }
 
 int	main(int ac, char **av)
@@ -57,11 +62,6 @@ int	main(int ac, char **av)
 	if (parsing(ac, av, &m.sdata) == 1)
 		exit(1);
 	m.lst_pid = NULL;
-	// printf("number_of_philo: %d| ", m.sdata.number_of_philo);
-	// printf("time_to_die: %zu | ", m.sdata.time_to_die);
-	// printf("time_to_eat: %d | ", m.sdata.time_to_eat);
-	// printf("time_to_sleep: %d | ", m.sdata.time_to_sleep);
-	// printf("number_of_time_eat: %d\n", m.sdata.number_of_time_eat);
 	if (init_sem(&m) == 1)
 		exit(1);
 	if (exe_philos(&m) == 1)

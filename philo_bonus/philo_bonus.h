@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:36:26 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/22 10:14:59 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 14:01:51 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/time.h>
 # include <stdbool.h>
 # include <semaphore.h>
+# include <fcntl.h>
 
 typedef struct s_sdata
 {
@@ -32,10 +33,20 @@ typedef struct s_sdata
 	int					fork_fail;
 }	t_sdata;
 
+typedef struct s_philo
+{
+	sem_t	*eating;
+	sem_t	*is_dead;
+	int		finished;
+	int		dead;
+	int		id;
+}	t_philo;
+
 typedef struct s_sems
 {
 	sem_t	*forks;
-	sem_t	print;
+	sem_t	*print;
+	sem_t	*is_dead;
 }	t_sems;
 
 typedef struct s_main

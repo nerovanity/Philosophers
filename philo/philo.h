@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 10:34:22 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 14:09:33 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct s_main
 	pthread_t			monitor;
 	t_sdata				sdata;
 	t_philo				*philo;
-	int					failed;
 }				t_main;
 
 int		parsing(int ac, char **av, t_sdata *rules);

@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 23:06:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 10:22:44 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 14:10:59 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,38 +21,43 @@ void	ft_putstr_fd(char *str, int fd)
 		write(fd, &str[i++], 1);
 }
 
-static int	skip_ws(const char *str)
+void	failed_mutex(t_sdata *sdata, int flag)
 {
 	int	i;
 
 	i = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
-		i++;
-	return (i);
+	while (i < sdata->number_of_philo)
+		pthread_mutex_destroy(&sdata->forks[i++]);
+	if (flag >= 1)
+		pthread_mutex_destroy(&sdata->is_dead);
+	else if (flag >= 2)
+		pthread_mutex_destroy(&sdata->meals);
+	else if (flag >= 3)
+		pthread_mutex_destroy(&sdata->print);
+	else if (flag == 4)
+		pthread_mutex_destroy(&sdata->finished);
 }
 
-int	ft_atoi(const char *str)
+int	ext_philo_exe(t_main *m)
 {
-	int			i;
-	long long	r;
-	long long	max;
+	int	i;
+	int	j;
 
 	i = 0;
-	r = 0;
-	max = 2147483647;
-	i = skip_ws(str);
-	if (str[i] == '+')
-		i++;
-	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
+	j = 0;
+	while (i < m->sdata.number_of_philo)
 	{
-		if (r > (max - (str[i] - '0')) / 10)
-			return (-1);
-		r = (r * 10) + (str[i++] - '0');
+		if (pthread_create(&m->philo[i].thread, NULL,
+				routine, &m->philo[i]) != 0)
+		{
+			while (j < i)
+				pthread_join(m->philo[j++].thread, 0);
+			pthread_join(m->monitor, 0);
+			return (1);
+		}
+		i++;
 	}
-	i += skip_ws(&str[i]);
-	if (str[i])
-		return (0);
-	return (r);
+	return (0);
 }
 
 void	ft_sleep(size_t micro, t_philo *philo)

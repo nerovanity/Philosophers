@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:52:45 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 10:34:09 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 14:14:28 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	*monitoring(void *tmp)
 	t_main	*m;
 
 	m = tmp;
-	while (1 && !m->failed)
+	while (1)
 	{
 		i = 0;
 		while (i < m->sdata.number_of_philo)
@@ -83,7 +83,7 @@ void	*s_case(void *tmp)
 	print_eat_fork(m->philo, 1);
 	if (check_is_dead(m->philo))
 		return (pthread_mutex_unlock(m->philo->r_fork), NULL);
-	return (NULL);
+	return (pthread_mutex_unlock(m->philo->r_fork), NULL);
 }
 
 void	free_all(t_main *m)
