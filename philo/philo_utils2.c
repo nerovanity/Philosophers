@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:52:45 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/17 14:10:32 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 10:34:09 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	*monitoring(void *tmp)
 	t_main	*m;
 
 	m = tmp;
-	while (1)
+	while (1 && !m->failed)
 	{
 		i = 0;
 		while (i < m->sdata.number_of_philo)

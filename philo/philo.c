@@ -6,24 +6,32 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:18 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/18 14:26:00 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 10:34:44 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static	void	init_mutex(t_sdata *sdata)
+static	int	init_mutex(t_sdata *sdata)
 {
 	int	i;
+	int	j;
 
 	i = 0;
+	j = 0;
 	while (i < sdata->number_of_philo)
-		pthread_mutex_init(&sdata->forks[i++], NULL);
-	pthread_mutex_init(&sdata->is_dead, NULL);
-	pthread_mutex_init(&sdata->meals, NULL);
-	pthread_mutex_init(&sdata->print, NULL);
-	pthread_mutex_init(&sdata->loop_check, NULL);
-	pthread_mutex_init(&sdata->finished, NULL);
+	{
+		if (pthread_mutex_init(&sdata->forks[i++], NULL) != 0)
+		{
+			while (j < i)
+				pthread_mutex_destroy(&sdata->forks[j++]);
+			ft_putstr_fd("mutex_init failed\n", 2);
+			return (1);
+		}
+	}
+	if (ext_mutex(sdata) == 1)
+		return (ft_putstr_fd("mutex_init failed\n", 2), 1);
+	return (0);
 }
 
 static int	philo_init(t_philo *philo, t_sdata *sdata)
@@ -35,7 +43,8 @@ static int	philo_init(t_philo *philo, t_sdata *sdata)
 	if (!sdata->forks)
 		return (write(2, "Malloc\n", 7), 1);
 	memset(sdata->forks, 0, sizeof(pthread_mutex_t) * sdata->number_of_philo);
-	init_mutex(sdata);
+	if (init_mutex(sdata) == 1)
+		return (1);
 	while (i < sdata->number_of_philo)
 	{
 		philo[i].id = i;
@@ -89,17 +98,16 @@ static int	philo_exe(t_main *m)
 	if (m->sdata.number_of_philo == 1)
 	{
 		if (pthread_create(&m->philo->thread, NULL, s_case, m) != 0)
+		{
+			m->failed = 1;
+			pthread_join(m->monitor, 0);
 			return (1);
+		}
 	}
 	else
 	{
-		while (i < m->sdata.number_of_philo)
-		{
-			if (pthread_create(&m->philo[i].thread, NULL,
-					routine, &m->philo[i]) != 0)
-				return (1);
-			i++;
-		}
+		if (ext_philo_exe(m) == 1)
+			return (1);
 	}
 	return (0);
 }

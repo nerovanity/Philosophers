@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/22 09:39:03 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 10:34:22 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_main
 	pthread_t			monitor;
 	t_sdata				sdata;
 	t_philo				*philo;
+	int					failed;
 }				t_main;
 
 int		parsing(int ac, char **av, t_sdata *rules);
@@ -76,5 +77,8 @@ bool	check_all_finished(t_philo *philo);
 void	*s_case(void *m);
 void	free_all(t_main *m);
 void	destroting_mutexs(t_main *m);
+void	failed_mutex(t_sdata *sdata, int i);
+int		ext_mutex(t_sdata *sdata);
+int		ext_philo_exe(t_main *m);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 23:06:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/13 15:11:10 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 10:22:44 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,19 @@ void	ft_sleep(size_t micro, t_philo *philo)
 			break ;
 		usleep(100);
 	}
+}
+
+int	ext_mutex(t_sdata *sdata)
+{
+	if (pthread_mutex_init(&sdata->is_dead, NULL) != 0)
+		return (failed_mutex(sdata, 0), 1);
+	if (pthread_mutex_init(&sdata->meals, NULL) != 0)
+		return (failed_mutex(sdata, 1), 1);
+	if (pthread_mutex_init(&sdata->print, NULL) != 0)
+		return (failed_mutex(sdata, 2), 1);
+	if (pthread_mutex_init(&sdata->loop_check, NULL) != 0)
+		return (failed_mutex(sdata, 3), 1);
+	if (pthread_mutex_init(&sdata->finished, NULL) != 0)
+		return (failed_mutex(sdata, 4), 1);
+	return (0);
 }
