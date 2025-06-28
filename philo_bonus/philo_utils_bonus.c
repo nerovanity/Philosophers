@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:57:41 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 09:53:56 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 16:54:32 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,38 +21,26 @@ void	ft_putstr_fd(char *str, int fd)
 		write(fd, &str[i++], 1);
 }
 
-static int	skip_ws(const char *str)
+void	*monitoring(void *tmp)
 {
-	int	i;
+	t_philo	*philo;
 
-	i = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
-		i++;
-	return (i);
+	philo = tmp;
+	while (1)
+	{
+		
+	}
 }
 
-int	ft_atoi(const char *str)
+void	child(t_main *m, int i)
 {
-	int			i;
-	long long	r;
-	long long	max;
+	t_philo	philo;
 
-	i = 0;
-	r = 0;
-	max = 2147483647;
-	i = skip_ws(str);
-	if (str[i] == '+')
-		i++;
-	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
-	{
-		if (r > (max - (str[i] - '0')) / 10)
-			return (-1);
-		r = (r * 10) + (str[i++] - '0');
-	}
-	i += skip_ws(&str[i]);
-	if (str[i])
-		return (0);
-	return (r);
+	time_getter(0);
+	init_philo(&philo, i);
+	routine(&philo);
+	if (pthread_create(philo.monitor, NULL, monitoring, &philo) != 0)
+		exit(1);
 }
 
 size_t	time_getter(int flag)

@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 22:42:53 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/22 10:15:06 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 16:46:19 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,40 @@ static void	args_err(void)
 	ft_putstr_fd("number_of_philosophers ", 2);
 	ft_putstr_fd("time_to_die time_to_eat time_to_sleep optional", 2);
 	ft_putstr_fd("[number_of_times_each_philosopher_must_eat]\n", 2);
+}
+
+static int	skip_ws(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
+		i++;
+	return (i);
+}
+
+int	ft_atoi(const char *str)
+{
+	int			i;
+	long long	r;
+	long long	max;
+
+	i = 0;
+	r = 0;
+	max = 2147483647;
+	i = skip_ws(str);
+	if (str[i] == '+')
+		i++;
+	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
+	{
+		if (r > (max - (str[i] - '0')) / 10)
+			return (-1);
+		r = (r * 10) + (str[i++] - '0');
+	}
+	i += skip_ws(&str[i]);
+	if (str[i])
+		return (0);
+	return (r);
 }
 
 int	parsing(int ac, char **av, t_sdata *sdata)

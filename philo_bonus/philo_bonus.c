@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:30:32 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 10:47:55 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 16:55:59 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ static	void	run_philo(t_main *m, int i)
 	if (pid == -1)
 		fork_err();
 	else if (!pid)
-		routine(m, i);
+		child(m, i);
 	else
 	{
 		lst_pid_add(m->lst_pid, new_node(pid));
 		waitpid(pid, &status, 0);
-		if (WEXITSTATUS(status) == 1)
+		if (WEXITSTATUS(status) == 2)
 			m->sdata.died = 1;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:36:26 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 14:01:51 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 16:53:43 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,14 @@ typedef struct s_sdata
 
 typedef struct s_philo
 {
-	sem_t	*eating;
-	sem_t	*is_dead;
-	int		finished;
-	int		dead;
-	int		id;
+	sem_t		*eating;
+	sem_t		*is_dead;
+	pthread_t	monitor;
+	int			finished;
+	int			dead;
+	size_t		leat;
+	int			neat;
+	int			id;
 }	t_philo;
 
 typedef struct s_sems
@@ -71,5 +74,8 @@ size_t	time_getter(int flag);
 void	fork_err(void);
 t_pids	*new_node(pid_t pid);
 void	lst_pid_add(t_pids **lst, t_pids *new);
+void	child(t_main *m, int i);
+void	routine(t_philo *philo);
+int		init_philo(t_philo *philo, int i);
 
 #endif
