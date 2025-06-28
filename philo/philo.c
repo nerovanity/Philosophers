@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:18 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 14:09:38 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 16:09:16 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,6 @@ bool	check_is_dead(t_philo *philo)
 	n = time_getter(1) - philo->last_eat;
 	pthread_mutex_unlock(&philo->sdata->meals);
 	pthread_mutex_lock(&philo->sdata->is_dead);
-	if (philo->sdata->died || philo->dead == 1)
-	{
-		pthread_mutex_unlock(&philo->sdata->is_dead);
-		return (true);
-	}
 	if (n > philo->sdata->time_to_die)
 	{
 		pthread_mutex_lock(&philo->sdata->print);

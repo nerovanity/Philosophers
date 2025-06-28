@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 23:11:37 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/13 15:26:09 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 16:10:31 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,16 @@ int	to_int(char *str)
 		return (0);
 	n = ft_atoi(str);
 	return (n);
+}
+
+bool	is_dead(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->sdata->is_dead);
+	if (philo->sdata->died || philo->dead == 1)
+	{
+		pthread_mutex_unlock(&philo->sdata->is_dead);
+		return (true);
+	}
+	pthread_mutex_unlock(&philo->sdata->is_dead);
+	return (false);
 }

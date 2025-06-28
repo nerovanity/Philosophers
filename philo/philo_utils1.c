@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 23:06:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 14:10:59 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 16:10:00 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_sleep(size_t micro, t_philo *philo)
 	start = time_getter(1) * 1000;
 	while ((time_getter(1) * 1000) - start < micro * 1000)
 	{
-		if (check_is_dead(philo))
+		if (is_dead(philo))
 			break ;
 		usleep(100);
 	}

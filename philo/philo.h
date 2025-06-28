@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 14:09:33 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 16:08:14 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,6 @@ void	destroting_mutexs(t_main *m);
 void	failed_mutex(t_sdata *sdata, int i);
 int		ext_mutex(t_sdata *sdata);
 int		ext_philo_exe(t_main *m);
+bool	is_dead(t_philo *philo);
 
 #endif

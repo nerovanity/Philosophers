@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:17:36 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/17 17:25:48 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 16:09:45 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 bool	eat_even(t_philo *philo)
 {
 	pthread_mutex_lock(philo->r_fork);
-	if (check_is_dead(philo))
+	if (is_dead(philo))
 		return (pthread_mutex_unlock(philo->r_fork), false);
 	print_eat_fork(philo, 1);
 	pthread_mutex_lock(philo->l_fork);
-	if (check_is_dead(philo))
+	if (is_dead(philo))
 		return (pthread_mutex_unlock(philo->r_fork),
 			pthread_mutex_unlock(philo->l_fork), false);
 	print_eat_fork(philo, 1);
@@ -28,7 +28,7 @@ bool	eat_even(t_philo *philo)
 	print_eat_fork(philo, 0);
 	philo->teat++;
 	pthread_mutex_unlock(&philo->sdata->meals);
-	if (check_is_dead(philo))
+	if (is_dead(philo))
 		return (pthread_mutex_unlock(philo->r_fork),
 			pthread_mutex_unlock(philo->l_fork), false);
 	ft_sleep(philo->sdata->time_to_eat, philo);
@@ -40,11 +40,11 @@ bool	eat_even(t_philo *philo)
 bool	eat_odd(t_philo *philo)
 {
 	pthread_mutex_lock(philo->l_fork);
-	if (check_is_dead(philo))
+	if (is_dead(philo))
 		return (pthread_mutex_unlock(philo->l_fork), false);
 	print_eat_fork(philo, 1);
 	pthread_mutex_lock(philo->r_fork);
-	if (check_is_dead(philo))
+	if (is_dead(philo))
 		return (pthread_mutex_unlock(philo->l_fork),
 			pthread_mutex_unlock(philo->r_fork), false);
 	print_eat_fork(philo, 1);
@@ -53,7 +53,7 @@ bool	eat_odd(t_philo *philo)
 	print_eat_fork(philo, 0);
 	philo->teat++;
 	pthread_mutex_unlock(&philo->sdata->meals);
-	if (check_is_dead(philo))
+	if (is_dead(philo))
 		return (pthread_mutex_unlock(philo->l_fork),
 			pthread_mutex_unlock(philo->r_fork), false);
 	ft_sleep(philo->sdata->time_to_eat, philo);
@@ -79,7 +79,7 @@ void	routine_odd(t_philo *philo)
 		return ;
 	if (!philo_sleep(philo))
 		return ;
-	if (check_is_dead(philo))
+	if (is_dead(philo))
 		return ;
 	print_think(philo);
 }
@@ -97,7 +97,7 @@ void	*routine(void *tmp)
 		usleep(100);
 	}
 	print_think(philo);
-	while (!is_finished && !check_is_dead(philo))
+	while (!is_finished && !is_dead(philo))
 	{
 		if ((philo->id + 1) % 2 == 0)
 			routine_even(philo);

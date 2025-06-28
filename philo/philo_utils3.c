@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 12:45:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/17 14:10:48 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/28 16:12:14 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	print_eat_fork(t_philo *philo, int flag)
 
 bool	philo_sleep(t_philo *philo)
 {
-	if (check_is_dead(philo))
+	if (is_dead(philo))
 		return (false);
 	pthread_mutex_lock(&philo->sdata->print);
 	printf("%ld %d is sleeping\n", time_getter(1), philo->id + 1);
@@ -56,7 +56,7 @@ bool	philo_sleep(t_philo *philo)
 
 void	print_think(t_philo *philo)
 {
-	if (check_is_dead(philo))
+	if (is_dead(philo))
 		return ;
 	pthread_mutex_lock(&philo->sdata->print);
 	printf("%ld %d is thinking\n", time_getter(1), philo->id + 1);
