@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:36:26 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 16:53:43 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/29 11:28:49 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <stdbool.h>
 # include <semaphore.h>
 # include <fcntl.h>
+# include <signal.h>
+# include <sys/wait.h>
 
 typedef struct s_sdata
 {
@@ -29,7 +31,6 @@ typedef struct s_sdata
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					number_of_time_eat;
-	int					died;
 	int					fork_fail;
 }	t_sdata;
 
@@ -43,6 +44,7 @@ typedef struct s_philo
 	size_t		leat;
 	int			neat;
 	int			id;
+	t_sdata		*sdata;
 }	t_philo;
 
 typedef struct s_sems
@@ -52,6 +54,12 @@ typedef struct s_sems
 	sem_t	*is_dead;
 }	t_sems;
 
+typedef struct s_pids
+{
+	pid_t	id;
+	void	*next;
+}	t_pids;
+
 typedef struct s_main
 {
 	t_sdata	sdata;
@@ -59,11 +67,6 @@ typedef struct s_main
 	t_pids	**lst_pid;
 }	t_main;
 
-typedef struct s_pids
-{
-	pid_t	id;
-	void	*next;
-}	t_pids;
 
 int		parsing(int ac, char **av, t_sdata *rules);
 void	ft_putstr_fd(char *str, int fd);
@@ -75,7 +78,11 @@ void	fork_err(void);
 t_pids	*new_node(pid_t pid);
 void	lst_pid_add(t_pids **lst, t_pids *new);
 void	child(t_main *m, int i);
-void	routine(t_philo *philo);
-int		init_philo(t_philo *philo, int i);
+void	routine(t_philo *philo, t_main *m);
+void	init_philo(t_philo *philo, int i, t_main *m);
+void	handle_dead(t_main *m);
+void	print_think(t_philo *philo, t_main *m);
+void	philo_sleep(t_philo *philo, t_main *m);
+void	print_eat_fork(t_philo *philo, t_main *m, int flag);
 
 #endif

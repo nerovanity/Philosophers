@@ -6,14 +6,17 @@
 #    By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/18 14:39:23 by ihamani           #+#    #+#              #
-#    Updated: 2025/06/18 15:00:10 by ihamani          ###   ########.fr        #
+#    Updated: 2025/06/29 11:06:05 by ihamani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=cc
-FLAGS=-Wall -Wextra -Werror
+FLAGS=-Wall -Wextra -Werror -g -fsanitize=thread
 SRC=	philo_bonus.c \
 		philo_utils_bonus.c \
+		philo_utils2_bonus.c \
+		philo_utils3_bonus.c \
+		routine_bonus.c	\
 		parsing_bonus.c \
 		to_int_bonus.c
 OBJ=$(SRC:.c=.o)

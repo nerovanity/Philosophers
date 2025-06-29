@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:57:41 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 16:54:32 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/29 11:33:36 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,20 @@ void	ft_putstr_fd(char *str, int fd)
 void	*monitoring(void *tmp)
 {
 	t_philo	*philo;
+	size_t	n;
 
 	philo = tmp;
 	while (1)
 	{
-		
+		usleep(1000);
+		sem_wait(philo->eating);
+		n = time_getter(1) - philo->leat;
+		sem_post(philo->eating);
+		if (n > philo->sdata->time_to_die)
+		{
+			printf("%ld %d died\n", time_getter(1), philo->id + 1);
+			exit(2);
+		}
 	}
 }
 
@@ -37,10 +46,11 @@ void	child(t_main *m, int i)
 	t_philo	philo;
 
 	time_getter(0);
-	init_philo(&philo, i);
-	routine(&philo);
-	if (pthread_create(philo.monitor, NULL, monitoring, &philo) != 0)
+	init_philo(&philo, i, m);
+	if (pthread_create(&philo.monitor, NULL, monitoring, &philo) != 0)
 		exit(1);
+	pthread_detach(philo.monitor);
+	routine(&philo, m);
 }
 
 size_t	time_getter(int flag)
