@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:57:41 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 11:33:36 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/29 14:24:47 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,16 @@ void	*monitoring(void *tmp)
 	while (1)
 	{
 		usleep(1000);
-		sem_wait(philo->eating);
+		sem_wait(philo->sems->eating);
 		n = time_getter(1) - philo->leat;
-		sem_post(philo->eating);
+		sem_post(philo->sems->eating);
 		if (n > philo->sdata->time_to_die)
 		{
 			printf("%ld %d died\n", time_getter(1), philo->id + 1);
-			exit(2);
+			sem_wait(philo->sems->is_dead);
+			philo->dead = 1;
+			sem_post(philo->sems->is_dead);
+			return (NULL);
 		}
 	}
 }
@@ -70,11 +73,27 @@ size_t	time_getter(int flag)
 		return (now_ms - start_time);
 }
 
-void	ft_sleep(size_t micro)
+void	ft_sleep(size_t micro, t_philo *philo)
 {
 	size_t	start;
 
+	sem_wait(philo->sems->is_dead);
+	if (philo->dead)
+	{
+		sem_post(philo->sems->is_dead);
+		exit(2);
+	}
+	sem_post(philo->sems->is_dead);
 	start = time_getter(1) * 1000;
 	while ((time_getter(1) * 1000) - start < micro * 1000)
+	{
+		sem_wait(philo->sems->is_dead);
+		if (philo->dead)
+		{
+			sem_post(philo->sems->is_dead);
+			exit(2);
+		}
+		sem_post(philo->sems->is_dead);
 		usleep(100);
+	}
 }

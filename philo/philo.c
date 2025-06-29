@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:18 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 16:09:16 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/29 11:07:19 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static int	philo_exe(t_main *m)
 	if (m->sdata.number_of_philo == 1)
 	{
 		if (pthread_create(&m->philo->thread, NULL, s_case, m) != 0)
-			return (pthread_join(m->monitor, 0), 1);
+			return (1);
 	}
 	else
 	{

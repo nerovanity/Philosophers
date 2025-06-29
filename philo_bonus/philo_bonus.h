@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:36:26 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 11:28:49 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/29 14:09:12 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,16 @@ typedef struct s_sdata
 	int					fork_fail;
 }	t_sdata;
 
+typedef struct s_sems
+{
+	sem_t	*forks;
+	sem_t	*print;
+	sem_t	*is_dead;
+	sem_t	*eating;
+}	t_sems;
+
 typedef struct s_philo
 {
-	sem_t		*eating;
-	sem_t		*is_dead;
 	pthread_t	monitor;
 	int			finished;
 	int			dead;
@@ -45,14 +51,8 @@ typedef struct s_philo
 	int			neat;
 	int			id;
 	t_sdata		*sdata;
+	t_sems		*sems;
 }	t_philo;
-
-typedef struct s_sems
-{
-	sem_t	*forks;
-	sem_t	*print;
-	sem_t	*is_dead;
-}	t_sems;
 
 typedef struct s_pids
 {
@@ -64,15 +64,14 @@ typedef struct s_main
 {
 	t_sdata	sdata;
 	t_sems	sems;
-	t_pids	**lst_pid;
+	t_pids	*lst_pid;
 }	t_main;
-
 
 int		parsing(int ac, char **av, t_sdata *rules);
 void	ft_putstr_fd(char *str, int fd);
 int		to_int(char *str);
 int		ft_atoi(const char *str);
-void	ft_sleep(size_t micro);
+void	ft_sleep(size_t micro, t_philo *philo);
 size_t	time_getter(int flag);
 void	fork_err(void);
 t_pids	*new_node(pid_t pid);

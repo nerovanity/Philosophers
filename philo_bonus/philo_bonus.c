@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:30:32 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 11:21:21 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/29 14:20:32 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static	void	run_philo(t_main *m, int i)
 	else if (!pid)
 		child(m, i);
 	else
-		lst_pid_add(m->lst_pid, new_node(pid));
+		lst_pid_add(&m->lst_pid, new_node(pid));
 }
 
 static void	exe_philos(t_main *m)
@@ -39,26 +39,49 @@ static void	exe_philos(t_main *m)
 		handle_dead(m);
 }
 
+static void	ext_init_sem(t_main *m)
+{
+	m->sems.eating = sem_open("/eating", O_CREAT, 0666, 1);
+	if (m->sems.eating == SEM_FAILED)
+	{
+		sem_close(m->sems.forks);
+		sem_close(m->sems.print);
+		ft_putstr_fd("eating sem failed\n", 2);
+		exit(3);
+	}
+	sem_unlink("/eating");
+	m->sems.is_dead = sem_open("/dead", O_CREAT, 0666, 1);
+	if (m->sems.is_dead == SEM_FAILED)
+	{
+		sem_close(m->sems.forks);
+		sem_close(m->sems.print);
+		sem_close(m->sems.eating);
+		ft_putstr_fd("dead sem failed\n", 2);
+		exit(3);
+	}
+	sem_unlink("/dead");
+}
+
 static	void	init_sem(t_main *m)
 {
-	m->sems.forks = sem_open("sem_forks", O_CREAT, 0,
-			666, m->sdata.number_of_philo);
+	m->sems.forks = sem_open("/sem_forks", O_CREAT,
+			0666, m->sdata.number_of_philo);
 	if (m->sems.forks == SEM_FAILED)
 	{
-		// ft_putstr_fd("forks sem failed", 2);
-		perror("forks");
+		ft_putstr_fd("forks sem failed", 2);
 		exit(1);
 	}
-	sem_unlink("sem_forks");
-	m->sems.print = sem_open("sem_print", O_CREAT, 0, 666);
+	sem_unlink("/sem_forks");
+	m->sems.print = sem_open("/sem_print", O_CREAT, 0666, 1);
 	if (m->sems.print == SEM_FAILED)
 	{
-		// perror("print");
+		perror("print");
 		ft_putstr_fd("print sem failed", 2);
 		sem_close(m->sems.forks);
 		exit(1);
 	}
-	sem_unlink("sem_print");
+	sem_unlink("/sem_print");
+	ext_init_sem(m);
 }
 
 int	main(int ac, char **av)

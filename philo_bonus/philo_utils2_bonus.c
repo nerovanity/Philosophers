@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 10:02:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 11:18:43 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/29 14:25:59 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	handle_dead(t_main *m)
 {
 	t_pids	*head;
 
-	head = *m->lst_pid;
+	head = m->lst_pid;
 	while (head)
 	{
 		kill(head->id, SIGKILL);
@@ -60,6 +60,13 @@ void	handle_dead(t_main *m)
 
 void	print_eat_fork(t_philo *philo, t_main *m, int flag)
 {
+	sem_wait(m->sems.is_dead);
+	if (philo->dead)
+	{
+		sem_post(m->sems.is_dead);
+		exit(2);
+	}
+	sem_post(m->sems.is_dead);
 	if (!flag)
 	{
 		sem_wait(m->sems.print);
@@ -73,4 +80,3 @@ void	print_eat_fork(t_philo *philo, t_main *m, int flag)
 		sem_post(m->sems.print);
 	}
 }
-
