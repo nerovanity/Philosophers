@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 10:34:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 14:06:04 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/29 16:28:08 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 
 void	philo_sleep(t_philo *philo, t_main *m)
 {
+	sem_wait(philo->sems->dying);
+	sem_post(philo->sems->dying);
 	sem_wait(m->sems.is_dead);
 	if (philo->dead)
 	{
 		sem_post(m->sems.is_dead);
+		sem_wait(philo->sems->dying);
 		exit(2);
 	}
 	sem_post(m->sems.is_dead);
@@ -29,10 +32,13 @@ void	philo_sleep(t_philo *philo, t_main *m)
 
 void	print_think(t_philo *philo, t_main *m)
 {
+	sem_wait(philo->sems->dying);
+	sem_post(philo->sems->dying);
 	sem_wait(m->sems.is_dead);
 	if (philo->dead)
 	{
 		sem_post(m->sems.is_dead);
+		sem_wait(philo->sems->dying);
 		exit(2);
 	}
 	sem_post(m->sems.is_dead);

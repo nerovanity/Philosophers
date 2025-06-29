@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:57:41 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 14:24:47 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/29 16:27:16 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,8 @@ void	ft_sleep(size_t micro, t_philo *philo)
 {
 	size_t	start;
 
-	sem_wait(philo->sems->is_dead);
-	if (philo->dead)
-	{
-		sem_post(philo->sems->is_dead);
-		exit(2);
-	}
-	sem_post(philo->sems->is_dead);
+	sem_wait(philo->sems->dying);
+	sem_post(philo->sems->dying);
 	start = time_getter(1) * 1000;
 	while ((time_getter(1) * 1000) - start < micro * 1000)
 	{
@@ -91,6 +86,7 @@ void	ft_sleep(size_t micro, t_philo *philo)
 		if (philo->dead)
 		{
 			sem_post(philo->sems->is_dead);
+			sem_wait(philo->sems->dying);
 			exit(2);
 		}
 		sem_post(philo->sems->is_dead);

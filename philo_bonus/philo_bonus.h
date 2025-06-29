@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:36:26 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 14:09:12 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/29 16:24:16 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_sems
 	sem_t	*print;
 	sem_t	*is_dead;
 	sem_t	*eating;
+	sem_t	*dying;
 }	t_sems;
 
 typedef struct s_philo

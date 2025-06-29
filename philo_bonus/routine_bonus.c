@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:48:37 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 14:25:24 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/29 16:26:27 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	routine(t_philo *philo, t_main *m)
 	is_dead = 0;
 	while (!is_dead)
 	{
+		sem_wait(philo->sems->dying);
+		sem_post(philo->sems->dying);
 		a_routine(philo, m);
 		sem_wait(m->sems.is_dead);
 		is_dead = philo->dead;
