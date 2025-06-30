@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:57:41 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 16:27:16 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/30 16:13:51 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void	*monitoring(void *tmp)
 		usleep(1000);
 		sem_wait(philo->sems->eating);
 		n = time_getter(1) - philo->leat;
+		if (philo->sdata->number_of_time_eat > 0
+			&& philo->neat == philo->sdata->number_of_time_eat)
+		{
+			sem_post(philo->sems->finished);
+		}
 		sem_post(philo->sems->eating);
 		if (n > philo->sdata->time_to_die)
 		{
@@ -50,6 +55,7 @@ void	child(t_main *m, int i)
 
 	time_getter(0);
 	init_philo(&philo, i, m);
+	sem_wait(m->sems.finished);
 	if (pthread_create(&philo.monitor, NULL, monitoring, &philo) != 0)
 		exit(1);
 	pthread_detach(philo.monitor);

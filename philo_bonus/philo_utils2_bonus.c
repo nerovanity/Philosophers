@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 10:02:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 16:28:15 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/30 16:08:22 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_pids	*new_node(pid_t pid)
 
 	new = malloc(sizeof(t_pids));
 	new->id = pid;
+	new->next = NULL;
 	return (new);
 }
 

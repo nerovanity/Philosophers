@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:30:32 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 14:20:32 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/30 16:15:40 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	exe_philos(t_main *m)
 	status = 0;
 	while (i < m->sdata.number_of_philo)
 		run_philo(m, i++);
+	check_if_finshed(m);
 	wait(&status);
 	if (WEXITSTATUS(status) == 2)
 		handle_dead(m);
@@ -60,6 +61,12 @@ static void	ext_init_sem(t_main *m)
 		exit(3);
 	}
 	sem_unlink("/dead");
+	m->sems.dying = sem_open("/dying", O_CREAT,
+			0666, 1);
+	sem_unlink("/dying");
+	m->sems.finished = sem_open("/finished", O_CREAT,
+			0666, m->sdata.number_of_philo);
+	sem_unlink("/finished");
 }
 
 static	void	init_sem(t_main *m)

@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:36:26 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 16:24:16 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/30 15:53:30 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ typedef struct s_sems
 	sem_t	*is_dead;
 	sem_t	*eating;
 	sem_t	*dying;
+	sem_t	*finished;
 }	t_sems;
 
 typedef struct s_philo
 {
 	pthread_t	monitor;
-	int			finished;
 	int			dead;
 	size_t		leat;
 	int			neat;
@@ -63,9 +63,10 @@ typedef struct s_pids
 
 typedef struct s_main
 {
-	t_sdata	sdata;
-	t_sems	sems;
-	t_pids	*lst_pid;
+	t_sdata		sdata;
+	t_sems		sems;
+	pthread_t	checker;
+	t_pids		*lst_pid;
 }	t_main;
 
 int		parsing(int ac, char **av, t_sdata *rules);
@@ -84,5 +85,6 @@ void	handle_dead(t_main *m);
 void	print_think(t_philo *philo, t_main *m);
 void	philo_sleep(t_philo *philo, t_main *m);
 void	print_eat_fork(t_philo *philo, t_main *m, int flag);
+void	check_if_finshed(t_main *m);
 
 #endif

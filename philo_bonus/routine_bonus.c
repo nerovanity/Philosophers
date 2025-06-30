@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:48:37 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/29 16:26:27 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/06/30 15:46:09 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	init_philo(t_philo *philo, int i, t_main *m)
 {
-	philo->finished = 0;
 	philo->id = i;
 	philo->dead = 0;
 	philo->leat = time_getter(1);
 	philo->sdata = &m->sdata;
 	philo->sems = &m->sems;
+	philo->neat = 0;
 }
 
 void	a_routine(t_philo *philo, t_main *m)
@@ -30,6 +30,7 @@ void	a_routine(t_philo *philo, t_main *m)
 	print_eat_fork(philo, m, 1);
 	sem_wait(m->sems.eating);
 	philo->leat = time_getter(1);
+	philo->neat++;
 	sem_post(m->sems.eating);
 	print_eat_fork(philo, m, 0);
 	ft_sleep(m->sdata.time_to_eat, philo);
