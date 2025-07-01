@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:30:32 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 15:48:17 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 17:50:42 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,22 +49,9 @@ static void	ext_init_sem(t_main *m)
 		sem_close(m->sems.forks);
 		sem_close(m->sems.print);
 		ft_putstr_fd("eating sem failed\n", 2);
-		exit(3);
+		exit(1);
 	}
 	sem_unlink("/eating");
-	m->sems.is_dead = sem_open("/dead", O_CREAT, 0666, 1);
-	if (m->sems.is_dead == SEM_FAILED)
-	{
-		sem_close(m->sems.forks);
-		sem_close(m->sems.print);
-		sem_close(m->sems.eating);
-		ft_putstr_fd("dead sem failed\n", 2);
-		exit(3);
-	}
-	sem_unlink("/dead");
-	m->sems.dying = sem_open("/dying", O_CREAT,
-			0666, 1);
-	sem_unlink("/dying");
 	m->sems.finished = sem_open("/finished", O_CREAT,
 			0666, m->sdata.number_of_philo);
 	sem_unlink("/finished");
@@ -102,4 +89,5 @@ int	main(int ac, char **av)
 	init_sem(&m);
 	exe_philos(&m);
 	free_lst(&m.lst_pid);
+	close_sems(&m);
 }

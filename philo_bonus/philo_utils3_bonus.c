@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 10:34:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 15:48:38 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 18:07:38 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,14 @@
 
 void	philo_sleep(t_philo *philo, t_main *m)
 {
-	sem_wait(philo->sems->dying);
-	sem_post(philo->sems->dying);
-	sem_wait(m->sems.is_dead);
-	if (philo->dead)
-	{
-		sem_post(m->sems.is_dead);
-		sem_wait(philo->sems->dying);
-		exit(2);
-	}
-	sem_post(m->sems.is_dead);
 	sem_wait(m->sems.print);
 	printf("%ld %d is sleeping\n", time_getter(1), philo->id + 1);
 	sem_post(m->sems.print);
-	ft_sleep(m->sdata.time_to_sleep, philo);
+	ft_sleep(m->sdata.time_to_sleep);
 }
 
 void	print_think(t_philo *philo, t_main *m)
 {
-	sem_wait(philo->sems->dying);
-	sem_post(philo->sems->dying);
-	sem_wait(m->sems.is_dead);
-	if (philo->dead)
-	{
-		sem_post(m->sems.is_dead);
-		sem_wait(philo->sems->dying);
-		exit(2);
-	}
-	sem_post(m->sems.is_dead);
 	sem_wait(m->sems.print);
 	printf("%ld %d is thinking\n", time_getter(1), philo->id + 1);
 	sem_post(m->sems.print);
@@ -59,12 +39,11 @@ void	*is_finished(void *tmp)
 		sem_wait(m->sems.finished);
 		i++;
 	}
-	while (i)
-	{
-		sem_post(m->sems.finished);
-		i--;
-	}
-	handle_dead(m);
+	sem_wait(m->sems.print);
+	handle_finished(m);
+	while (sem_post(m->sems.finished) != 0)
+		continue ;
+	sem_close(m->sems.finished);
 	return (NULL);
 }
 

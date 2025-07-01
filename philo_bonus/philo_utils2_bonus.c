@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 10:02:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 16:52:43 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 17:57:13 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	fork_err(void)
 {
+	ft_putstr_fd("Fork failed", 2);
 	while (wait(NULL) != -1)
 		continue ;
-	ft_putstr_fd("Fork failed", 2);
 	exit(1);
 }
 
@@ -50,27 +50,22 @@ void	lst_pid_add(t_pids **lst, t_pids *new)
 void	handle_dead(t_main *m)
 {
 	t_pids	*head;
+	int		i;
 
+	i = 0;
 	head = m->lst_pid;
 	while (head)
 	{
 		kill(head->id, SIGKILL);
 		head = head->next;
 	}
+	while (sem_post(m->sems.finished) != 0)
+		continue ;
+	sem_post(m->sems.print);
 }
 
 void	print_eat_fork(t_philo *philo, t_main *m, int flag)
 {
-	sem_wait(philo->sems->dying);
-	sem_post(philo->sems->dying);
-	sem_wait(m->sems.is_dead);
-	if (philo->dead)
-	{
-		sem_post(m->sems.is_dead);
-		sem_wait(philo->sems->dying);
-		exit(2);
-	}
-	sem_post(m->sems.is_dead);
 	if (!flag)
 	{
 		sem_wait(m->sems.print);

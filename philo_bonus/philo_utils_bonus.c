@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:57:41 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 16:54:10 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 18:04:33 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	*monitoring(void *tmp)
 
 	philo = tmp;
 	flag = 0;
+	n = 0;
 	while (1)
 	{
 		usleep(1000);
@@ -40,11 +41,9 @@ void	*monitoring(void *tmp)
 		sem_post(philo->sems->eating);
 		if (n > philo->sdata->time_to_die)
 		{
+			sem_wait(philo->sems->print);
 			printf("%ld %d died\n", time_getter(1), philo->id + 1);
-			sem_wait(philo->sems->is_dead);
-			philo->dead = 1;
-			sem_post(philo->sems->is_dead);
-			return (NULL);
+			exit(2);
 		}
 	}
 }
@@ -56,7 +55,11 @@ void	child(t_main *m, int i)
 	init_philo(&philo, i, m);
 	sem_wait(m->sems.finished);
 	if (pthread_create(&philo.monitor, NULL, monitoring, &philo) != 0)
+	{
+		ft_putstr_fd("pthread_create failed", 2);
+		close_sems(m);
 		exit(1);
+	}
 	pthread_detach(philo.monitor);
 	routine(&philo, m);
 }
@@ -78,25 +81,11 @@ size_t	time_getter(int flag)
 		return (now_ms - start_time);
 }
 
-void	ft_sleep(size_t micro, t_philo *philo)
+void	ft_sleep(size_t micro)
 {
 	size_t	start;
 
-	sem_wait(philo->sems->dying);
-	sem_post(philo->sems->dying);
 	start = time_getter(1) * 1000;
 	while ((time_getter(1) * 1000) - start < micro * 1000)
-	{
-		sem_wait(philo->sems->dying);
-		sem_post(philo->sems->dying);
-		sem_wait(philo->sems->is_dead);
-		if (philo->dead)
-		{
-			sem_post(philo->sems->is_dead);
-			sem_wait(philo->sems->dying);
-			exit(2);
-		}
-		sem_post(philo->sems->is_dead);
 		usleep(100);
-	}
 }

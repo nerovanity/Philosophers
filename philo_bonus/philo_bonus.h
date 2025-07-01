@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:36:26 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 15:47:46 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 17:57:38 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,13 @@ typedef struct s_sems
 {
 	sem_t	*forks;
 	sem_t	*print;
-	sem_t	*is_dead;
 	sem_t	*eating;
-	sem_t	*dying;
 	sem_t	*finished;
 }	t_sems;
 
 typedef struct s_philo
 {
 	pthread_t	monitor;
-	int			dead;
 	size_t		leat;
 	int			neat;
 	int			id;
@@ -73,7 +70,7 @@ int		parsing(int ac, char **av, t_sdata *rules);
 void	ft_putstr_fd(char *str, int fd);
 int		to_int(char *str);
 int		ft_atoi(const char *str);
-void	ft_sleep(size_t micro, t_philo *philo);
+void	ft_sleep(size_t micro);
 size_t	time_getter(int flag);
 void	fork_err(void);
 t_pids	*new_node(pid_t pid);
@@ -87,5 +84,7 @@ void	philo_sleep(t_philo *philo, t_main *m);
 void	print_eat_fork(t_philo *philo, t_main *m, int flag);
 void	check_if_finshed(t_main *m);
 void	free_lst(t_pids **lst);
+void	close_sems(t_main *m);
+void	handle_finished(t_main *m);
 
 #endif
