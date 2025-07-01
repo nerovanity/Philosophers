@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:30:32 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 17:50:42 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 19:59:22 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,14 @@ static void	ext_init_sem(t_main *m)
 	sem_unlink("/eating");
 	m->sems.finished = sem_open("/finished", O_CREAT,
 			0666, m->sdata.number_of_philo);
+	if (m->sems.finished == SEM_FAILED)
+	{
+		sem_close(m->sems.forks);
+		sem_close(m->sems.print);
+		sem_close(m->sems.eating);
+		ft_putstr_fd("finished sem failed\n", 2);
+		exit(1);
+	}
 	sem_unlink("/finished");
 }
 
