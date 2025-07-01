@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:57:41 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 18:04:33 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 19:41:33 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	*monitoring(void *tmp)
 		{
 			sem_wait(philo->sems->print);
 			printf("%ld %d died\n", time_getter(1), philo->id + 1);
+			sem_close(philo->sems->eating);
+			sem_close(philo->sems->finished);
 			exit(2);
 		}
 	}
@@ -52,6 +54,7 @@ void	child(t_main *m, int i)
 {
 	t_philo	philo;
 
+	free_lst(&m->lst_pid);
 	init_philo(&philo, i, m);
 	sem_wait(m->sems.finished);
 	if (pthread_create(&philo.monitor, NULL, monitoring, &philo) != 0)

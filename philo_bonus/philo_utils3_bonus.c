@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 10:34:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 18:07:38 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 19:27:13 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	free_lst(t_pids **lst)
 	t_pids	*head;
 	t_pids	*prv;
 
+	if (lst == NULL || *lst == NULL)
+		return ;
 	head = *lst;
 	while (head)
 	{

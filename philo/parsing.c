@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 22:42:53 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 14:10:42 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 19:22:59 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,7 @@ int	parsing(int ac, char **av, t_sdata *sdata)
 		if (sdata->number_of_time_eat <= 0)
 			return (ft_putstr_fd("not a valid arguments\n", 2), 1);
 	}
+	else
+		sdata->number_of_time_eat = 0;
 	return (0);
 }
