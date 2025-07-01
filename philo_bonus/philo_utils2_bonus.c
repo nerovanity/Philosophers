@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 10:02:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/30 16:08:22 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 16:52:43 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	handle_dead(t_main *m)
 
 void	print_eat_fork(t_philo *philo, t_main *m, int flag)
 {
+	sem_wait(philo->sems->dying);
+	sem_post(philo->sems->dying);
 	sem_wait(m->sems.is_dead);
 	if (philo->dead)
 	{

@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:30:32 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/30 16:15:40 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 15:48:17 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	exe_philos(t_main *m)
 
 	i = 0;
 	status = 0;
+	time_getter(0);
 	while (i < m->sdata.number_of_philo)
 		run_philo(m, i++);
 	check_if_finshed(m);
@@ -100,4 +101,5 @@ int	main(int ac, char **av)
 	m.lst_pid = NULL;
 	init_sem(&m);
 	exe_philos(&m);
+	free_lst(&m.lst_pid);
 }

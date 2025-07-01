@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 10:34:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/30 15:47:44 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 15:48:38 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,19 @@ void	check_if_finshed(t_main *m)
 		}
 	}
 	pthread_detach(m->checker);
+}
+
+void	free_lst(t_pids **lst)
+{
+	t_pids	*head;
+	t_pids	*prv;
+
+	head = *lst;
+	while (head)
+	{
+		prv = head;
+		head = head->next;
+		free(prv);
+	}
+	*lst = NULL;
 }

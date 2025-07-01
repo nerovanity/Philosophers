@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:36:26 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/30 15:53:30 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/01 15:47:46 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ void	print_think(t_philo *philo, t_main *m);
 void	philo_sleep(t_philo *philo, t_main *m);
 void	print_eat_fork(t_philo *philo, t_main *m, int flag);
 void	check_if_finshed(t_main *m);
+void	free_lst(t_pids **lst);
 
 #endif
