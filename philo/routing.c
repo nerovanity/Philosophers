@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:17:36 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 16:09:45 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/02 14:36:41 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	routine_even(t_philo *philo)
 		return ;
 	if (!philo_sleep(philo))
 		return ;
-	if (check_is_dead(philo))
+	if (is_dead(philo))
 		return ;
 	print_think(philo);
 }
