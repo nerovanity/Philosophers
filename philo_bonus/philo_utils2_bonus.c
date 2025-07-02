@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 10:02:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 17:57:13 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/02 20:27:57 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	fork_err(void)
 {
 	ft_putstr_fd("Fork failed", 2);
-	while (wait(NULL) != -1)
+	while (waitpid(-1, NULL, 0) != -1)
 		continue ;
 	exit(1);
 }

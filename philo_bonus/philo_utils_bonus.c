@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:57:41 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 19:41:33 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/02 20:23:44 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ void	child(t_main *m, int i)
 
 	free_lst(&m->lst_pid);
 	init_philo(&philo, i, m);
-	sem_wait(m->sems.finished);
+	if (m->sdata.number_of_philo > 1 && m->sdata.number_of_time_eat > 0)
+		sem_wait(m->sems.finished);
 	if (pthread_create(&philo.monitor, NULL, monitoring, &philo) != 0)
 	{
 		ft_putstr_fd("pthread_create failed", 2);

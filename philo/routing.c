@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:17:36 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/02 14:36:41 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/02 16:08:36 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,10 @@ void	*routine(void *tmp)
 	if ((philo->id + 1) % 2 != 0)
 	{
 		print_think(philo);
-		usleep(100);
+		usleep(500);
 	}
-	print_think(philo);
+	else
+		print_think(philo);
 	while (!is_finished && !is_dead(philo))
 	{
 		if ((philo->id + 1) % 2 == 0)

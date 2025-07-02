@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 10:34:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 19:27:13 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/02 20:25:23 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	*is_finished(void *tmp)
 
 	i = 0;
 	m = tmp;
+	usleep(1000);
 	while (i < m->sdata.number_of_philo)
 	{
 		sem_wait(m->sems.finished);
@@ -43,6 +44,7 @@ void	*is_finished(void *tmp)
 	handle_finished(m);
 	while (sem_post(m->sems.finished) != 0)
 		continue ;
+	sem_post(m->sems.print);
 	sem_close(m->sems.finished);
 	return (NULL);
 }
@@ -51,7 +53,7 @@ void	check_if_finshed(t_main *m)
 {
 	int	i;
 
-	usleep(1000);
+	usleep(100);
 	i = m->sdata.number_of_philo;
 	if (pthread_create(&m->checker, 0, is_finished, m) != 0)
 	{

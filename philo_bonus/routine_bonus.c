@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:48:37 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 18:07:25 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/02 20:24:08 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	handle_finished(t_main *m)
 		kill(head->id, SIGKILL);
 		head = head->next;
 	}
-	sem_post(m->sems.print);
 }
 
 void	routine(t_philo *philo, t_main *m)

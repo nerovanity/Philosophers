@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:30:32 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/01 19:59:22 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/02 20:27:35 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ static void	exe_philos(t_main *m)
 	time_getter(0);
 	while (i < m->sdata.number_of_philo)
 		run_philo(m, i++);
-	check_if_finshed(m);
-	wait(&status);
+	if (m->sdata.number_of_philo > 1 && m->sdata.number_of_time_eat > 0)
+		check_if_finshed(m);
+	waitpid(-1, &status, 0);
 	if (WEXITSTATUS(status) == 2)
 		handle_dead(m);
 }
@@ -52,17 +53,20 @@ static void	ext_init_sem(t_main *m)
 		exit(1);
 	}
 	sem_unlink("/eating");
-	m->sems.finished = sem_open("/finished", O_CREAT,
-			0666, m->sdata.number_of_philo);
-	if (m->sems.finished == SEM_FAILED)
+	if (m->sdata.number_of_philo > 1 && m->sdata.number_of_time_eat > 0)
 	{
-		sem_close(m->sems.forks);
-		sem_close(m->sems.print);
-		sem_close(m->sems.eating);
-		ft_putstr_fd("finished sem failed\n", 2);
-		exit(1);
+		m->sems.finished = sem_open("/finished", O_CREAT,
+				0666, m->sdata.number_of_philo);
+		if (m->sems.finished == SEM_FAILED)
+		{
+			sem_close(m->sems.forks);
+			sem_close(m->sems.print);
+			sem_close(m->sems.eating);
+			ft_putstr_fd("finished sem failed\n", 2);
+			exit(1);
+		}
+		sem_unlink("/finished");
 	}
-	sem_unlink("/finished");
 }
 
 static	void	init_sem(t_main *m)
@@ -78,7 +82,6 @@ static	void	init_sem(t_main *m)
 	m->sems.print = sem_open("/sem_print", O_CREAT, 0666, 1);
 	if (m->sems.print == SEM_FAILED)
 	{
-		perror("print");
 		ft_putstr_fd("print sem failed", 2);
 		sem_close(m->sems.forks);
 		exit(1);
@@ -98,4 +101,6 @@ int	main(int ac, char **av)
 	exe_philos(&m);
 	free_lst(&m.lst_pid);
 	close_sems(&m);
+	while (waitpid(-1, NULL, 0) > 0)
+		continue ;
 }
