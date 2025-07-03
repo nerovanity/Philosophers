@@ -6,12 +6,12 @@
 #    By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/18 14:39:20 by ihamani           #+#    #+#              #
-#    Updated: 2025/07/02 17:53:59 by ihamani          ###   ########.fr        #
+#    Updated: 2025/07/03 14:48:01 by ihamani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=cc
-FLAGS=-Wall -Wextra -Werror #-g -fsanitize=thread
+FLAGS= -Wall -Wextra -Werror -g -fsanitize=thread
 SRC=	philo.c \
 		parsing.c \
 		philo_utils1.c \

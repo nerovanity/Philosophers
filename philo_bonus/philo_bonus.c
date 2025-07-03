@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:30:32 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/02 20:27:35 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/03 10:24:29 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static	void	run_philo(t_main *m, int i)
 
 	pid = fork();
 	if (pid == -1)
-		fork_err();
+		fork_err(m);
 	else if (!pid)
 		child(m, i);
 	else
@@ -35,8 +35,6 @@ static void	exe_philos(t_main *m)
 	time_getter(0);
 	while (i < m->sdata.number_of_philo)
 		run_philo(m, i++);
-	if (m->sdata.number_of_philo > 1 && m->sdata.number_of_time_eat > 0)
-		check_if_finshed(m);
 	waitpid(-1, &status, 0);
 	if (WEXITSTATUS(status) == 2)
 		handle_dead(m);
@@ -53,20 +51,17 @@ static void	ext_init_sem(t_main *m)
 		exit(1);
 	}
 	sem_unlink("/eating");
-	if (m->sdata.number_of_philo > 1 && m->sdata.number_of_time_eat > 0)
+	m->sems.finished = sem_open("/finished", O_CREAT,
+			0666, 1);
+	if (m->sems.finished == SEM_FAILED)
 	{
-		m->sems.finished = sem_open("/finished", O_CREAT,
-				0666, m->sdata.number_of_philo);
-		if (m->sems.finished == SEM_FAILED)
-		{
-			sem_close(m->sems.forks);
-			sem_close(m->sems.print);
-			sem_close(m->sems.eating);
-			ft_putstr_fd("finished sem failed\n", 2);
-			exit(1);
-		}
-		sem_unlink("/finished");
+		sem_close(m->sems.forks);
+		sem_close(m->sems.print);
+		sem_close(m->sems.eating);
+		ft_putstr_fd("finished sem failed\n", 2);
+		exit(1);
 	}
+	sem_unlink("/finished");
 }
 
 static	void	init_sem(t_main *m)

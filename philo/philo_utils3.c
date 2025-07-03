@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 12:45:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 16:12:14 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/03 14:44:09 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ void	close_threads(t_main *m)
 
 void	print_eat_fork(t_philo *philo, int flag)
 {
-	if (philo->sdata->died)
+	if (is_dead(philo))
 		return ;
 	if (!flag)
 	{
 		pthread_mutex_lock(&philo->sdata->print);
-		printf("%ld %d is eating\n", philo->last_eat, philo->id + 1);
+		printf("%ld %d is eating\n", time_getter(1), philo->id + 1);
 		pthread_mutex_unlock(&philo->sdata->print);
 	}
 	else

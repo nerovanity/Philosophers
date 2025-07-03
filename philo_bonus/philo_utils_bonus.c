@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:57:41 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/02 20:23:44 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/03 10:07:31 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,24 @@ void	*monitoring(void *tmp)
 {
 	t_philo	*philo;
 	size_t	n;
-	int		flag;
 
 	philo = tmp;
-	flag = 0;
 	n = 0;
 	while (1)
 	{
 		usleep(1000);
 		sem_wait(philo->sems->eating);
 		n = time_getter(1) - philo->leat;
-		if (philo->sdata->number_of_time_eat > 0 && flag == 0
-			&& philo->neat == philo->sdata->number_of_time_eat)
-			1 && (sem_post(philo->sems->finished), flag++);
+		if (philo->sdata->number_of_time_eat > 0
+			&& philo->neat >= philo->sdata->number_of_time_eat)
+			return (sem_post(philo->sems->eating),
+				sem_wait(philo->sems->finished),
+				philo->finished = 1, sem_post(philo->sems->finished), NULL);
 		sem_post(philo->sems->eating);
 		if (n > philo->sdata->time_to_die)
 		{
 			sem_wait(philo->sems->print);
 			printf("%ld %d died\n", time_getter(1), philo->id + 1);
-			sem_close(philo->sems->eating);
-			sem_close(philo->sems->finished);
 			exit(2);
 		}
 	}
@@ -56,8 +54,6 @@ void	child(t_main *m, int i)
 
 	free_lst(&m->lst_pid);
 	init_philo(&philo, i, m);
-	if (m->sdata.number_of_philo > 1 && m->sdata.number_of_time_eat > 0)
-		sem_wait(m->sems.finished);
 	if (pthread_create(&philo.monitor, NULL, monitoring, &philo) != 0)
 	{
 		ft_putstr_fd("pthread_create failed", 2);

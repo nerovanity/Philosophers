@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 22:42:53 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/02 18:55:38 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/03 14:47:17 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,11 @@ int	parsing(int ac, char **av, t_sdata *sdata)
 	if (ac < 5 || ac > 6)
 		return (args_err(), 1);
 	sdata->number_of_philo = to_int(av[1]);
-	if (sdata->number_of_philo == 0)
+	if (sdata->number_of_philo <= 0)
 		return (ft_putstr_fd("not a valid number of philos\n", 2), 1);
+	if (sdata->number_of_philo >= 250)
+		return (ft_putstr_fd("please provide ", 2),
+			ft_putstr_fd("number of philos less than 250\n", 2), 1);
 	sdata->time_to_die = to_int(av[2]);
 	sdata->time_to_eat = to_int(av[3]);
 	sdata->time_to_sleep = to_int(av[4]);

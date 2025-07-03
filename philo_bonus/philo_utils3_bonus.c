@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 10:34:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/02 20:25:23 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/03 09:48:08 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,45 +25,6 @@ void	print_think(t_philo *philo, t_main *m)
 	sem_wait(m->sems.print);
 	printf("%ld %d is thinking\n", time_getter(1), philo->id + 1);
 	sem_post(m->sems.print);
-}
-
-void	*is_finished(void *tmp)
-{
-	t_main	*m;
-	int		i;
-
-	i = 0;
-	m = tmp;
-	usleep(1000);
-	while (i < m->sdata.number_of_philo)
-	{
-		sem_wait(m->sems.finished);
-		i++;
-	}
-	sem_wait(m->sems.print);
-	handle_finished(m);
-	while (sem_post(m->sems.finished) != 0)
-		continue ;
-	sem_post(m->sems.print);
-	sem_close(m->sems.finished);
-	return (NULL);
-}
-
-void	check_if_finshed(t_main *m)
-{
-	int	i;
-
-	usleep(100);
-	i = m->sdata.number_of_philo;
-	if (pthread_create(&m->checker, 0, is_finished, m) != 0)
-	{
-		while (i)
-		{
-			sem_post(m->sems.finished);
-			i--;
-		}
-	}
-	pthread_detach(m->checker);
 }
 
 void	free_lst(t_pids **lst)

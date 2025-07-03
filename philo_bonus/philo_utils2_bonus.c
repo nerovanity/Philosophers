@@ -6,17 +6,19 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 10:02:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/02 20:27:57 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/03 10:25:26 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	fork_err(void)
+void	fork_err(t_main *m)
 {
 	ft_putstr_fd("Fork failed", 2);
+	handle_dead(m);
 	while (waitpid(-1, NULL, 0) != -1)
 		continue ;
+	free_lst(&m->lst_pid);
 	exit(1);
 }
 
@@ -53,6 +55,8 @@ void	handle_dead(t_main *m)
 	int		i;
 
 	i = 0;
+	if (m->lst_pid == NULL)
+		return ;
 	head = m->lst_pid;
 	while (head)
 	{
