@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 10:34:57 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/03 09:48:08 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/03 17:32:40 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,12 @@ void	philo_sleep(t_philo *philo, t_main *m)
 
 void	print_think(t_philo *philo, t_main *m)
 {
-	sem_wait(m->sems.print);
-	printf("%ld %d is thinking\n", time_getter(1), philo->id + 1);
-	sem_post(m->sems.print);
+	if (m->sdata.number_of_philo > 1)
+	{
+		sem_wait(m->sems.print);
+		printf("%ld %d is thinking\n", time_getter(1), philo->id + 1);
+		sem_post(m->sems.print);
+	}
 }
 
 void	free_lst(t_pids **lst)

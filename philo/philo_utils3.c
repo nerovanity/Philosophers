@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 12:45:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/03 14:44:09 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/03 15:58:36 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,5 @@ void	destroting_mutexs(t_main *m)
 	pthread_mutex_destroy(&m->sdata.is_dead);
 	pthread_mutex_destroy(&m->sdata.meals);
 	pthread_mutex_destroy(&m->sdata.print);
-	pthread_mutex_destroy(&m->sdata.loop_check);
 	pthread_mutex_destroy(&m->sdata.finished);
 }
