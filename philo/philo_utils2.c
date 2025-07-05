@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:52:45 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/05 10:56:49 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/05 11:19:42 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	*monitoring(void *tmp)
 		while (i < m->sdata.number_of_philo)
 		{
 			pthread_mutex_lock(&m->sdata.meals);
-			if (!m->philo[i].finshed)
+			if (m->philo[i].finshed)
 			{
 				pthread_mutex_unlock(&m->sdata.meals);
 				continue ;

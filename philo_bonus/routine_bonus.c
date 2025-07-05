@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 10:48:37 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/03 10:01:03 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/05 11:13:11 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,7 @@ void	routine(t_philo *philo, t_main *m)
 
 	tmp = 0;
 	if ((philo->id + 1) % 2 != 0)
-	{
-		print_think(philo, m);
 		usleep(1000);
-	}
 	while (!tmp)
 	{
 		a_routine(philo, m);
