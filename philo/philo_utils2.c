@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 09:52:45 by ihamani           #+#    #+#             */
-/*   Updated: 2025/06/28 14:14:28 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/05 10:56:49 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,21 @@ bool	check_all_finished(t_philo *philo)
 	int	i;
 	int	n;
 
+	if (philo->sdata->number_of_time_eat == 0)
+		return (true);
 	i = 0;
 	n = philo[i].sdata->number_of_philo;
+	pthread_mutex_lock(&philo->sdata->meals);
 	while (i < n)
 	{
 		if (philo[i].finshed != 1)
+		{
+			pthread_mutex_unlock(&philo->sdata->meals);
 			return (false);
+		}
 		i++;
 	}
+	pthread_mutex_unlock(&philo->sdata->meals);
 	return (true);
 }
 
@@ -51,23 +58,22 @@ void	*monitoring(void *tmp)
 	t_main	*m;
 
 	m = tmp;
-	while (1)
+	while (check_all_finished(m->philo))
 	{
 		i = 0;
+		usleep(100);
 		while (i < m->sdata.number_of_philo)
 		{
-			usleep(1000);
+			pthread_mutex_lock(&m->sdata.meals);
+			if (!m->philo[i].finshed)
+			{
+				pthread_mutex_unlock(&m->sdata.meals);
+				continue ;
+				i++;
+			}
+			pthread_mutex_unlock(&m->sdata.meals);
 			if (check_is_dead(&m->philo[i]))
 				return (NULL);
-			if (check_all_finished(m->philo))
-				return (pthread_mutex_lock(&m->sdata.finished),
-					m->sdata.all_finished = 1,
-					pthread_mutex_unlock(&m->sdata.finished), NULL);
-			pthread_mutex_lock(&m->sdata.meals);
-			if (m->sdata.number_of_time_eat > 0
-				&& m->philo[i].teat == m->sdata.number_of_time_eat)
-				m->philo[i].finshed = 1;
-			pthread_mutex_unlock(&m->sdata.meals);
 			i++;
 		}
 	}

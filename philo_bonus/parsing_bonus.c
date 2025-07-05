@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 22:42:53 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/03 14:41:03 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/05 10:52:50 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ int	parsing(int ac, char **av, t_sdata *sdata)
 	sdata->time_to_die = to_int(av[2]);
 	sdata->time_to_eat = to_int(av[3]);
 	sdata->time_to_sleep = to_int(av[4]);
-	if (sdata->time_to_die <= 0 || sdata->time_to_eat <= 0
-		|| sdata->time_to_sleep <= 0)
+	if (sdata->time_to_die <= 59 || sdata->time_to_eat <= 59
+		|| sdata->time_to_sleep <= 59)
 		return (ft_putstr_fd("not a valid arguments\n", 2), 1);
 	if (ac == 6)
 	{

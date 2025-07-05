@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:57:41 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/03 10:07:31 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/05 10:52:33 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	*monitoring(void *tmp)
 				sem_wait(philo->sems->finished),
 				philo->finished = 1, sem_post(philo->sems->finished), NULL);
 		sem_post(philo->sems->eating);
-		if (n > philo->sdata->time_to_die)
+		if (n > (size_t)philo->sdata->time_to_die)
 		{
 			sem_wait(philo->sems->print);
 			printf("%ld %d died\n", time_getter(1), philo->id + 1);

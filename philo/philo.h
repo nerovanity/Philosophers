@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:24 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/03 15:58:33 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/05 10:35:48 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,14 @@
 typedef struct s_sdata
 {
 	int					number_of_philo;
-	size_t				time_to_die;
+	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					number_of_time_eat;
-	int					all_finished;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		is_dead;
 	pthread_mutex_t		meals;
 	pthread_mutex_t		print;
-	pthread_mutex_t		finished;
 	bool				died;
 }	t_sdata;
 

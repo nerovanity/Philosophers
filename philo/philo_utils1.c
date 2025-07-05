@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 23:06:23 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/03 15:59:48 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/05 10:29:04 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	failed_mutex(t_sdata *sdata, int flag)
 		pthread_mutex_destroy(&sdata->is_dead);
 	else if (flag >= 2)
 		pthread_mutex_destroy(&sdata->meals);
-	else if (flag >= 3)
-		pthread_mutex_destroy(&sdata->print);
 }
 
 int	ext_philo_exe(t_main *m)
@@ -79,7 +77,5 @@ int	ext_mutex(t_sdata *sdata)
 		return (failed_mutex(sdata, 1), 1);
 	if (pthread_mutex_init(&sdata->print, NULL) != 0)
 		return (failed_mutex(sdata, 2), 1);
-	if (pthread_mutex_init(&sdata->finished, NULL) != 0)
-		return (failed_mutex(sdata, 3), 1);
 	return (0);
 }

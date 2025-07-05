@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 14:36:26 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/03 14:32:25 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/05 10:52:37 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 typedef struct s_sdata
 {
 	int					number_of_philo;
-	size_t				time_to_die;
+	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					number_of_time_eat;

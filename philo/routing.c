@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:17:36 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/02 16:08:36 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/05 10:28:46 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,15 @@ void	routine_even(t_philo *philo)
 {
 	if (!eat_even(philo))
 		return ;
+	pthread_mutex_lock(&philo->sdata->meals);
+	if (philo->sdata->number_of_time_eat > 0
+		&& philo->teat == philo->sdata->number_of_time_eat)
+	{
+		philo->finshed = 1;
+		pthread_mutex_unlock(&philo->sdata->meals);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->sdata->meals);
 	if (!philo_sleep(philo))
 		return ;
 	if (is_dead(philo))
@@ -77,6 +86,15 @@ void	routine_odd(t_philo *philo)
 {
 	if (!eat_odd(philo))
 		return ;
+	pthread_mutex_lock(&philo->sdata->meals);
+	if (philo->sdata->number_of_time_eat > 0
+		&& philo->teat == philo->sdata->number_of_time_eat)
+	{
+		philo->finshed = 1;
+		pthread_mutex_unlock(&philo->sdata->meals);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->sdata->meals);
 	if (!philo_sleep(philo))
 		return ;
 	if (is_dead(philo))
@@ -92,21 +110,16 @@ void	*routine(void *tmp)
 	philo = tmp;
 	is_finished = 0;
 	if ((philo->id + 1) % 2 != 0)
-	{
-		print_think(philo);
 		usleep(500);
-	}
-	else
-		print_think(philo);
 	while (!is_finished && !is_dead(philo))
 	{
 		if ((philo->id + 1) % 2 == 0)
 			routine_even(philo);
 		else
 			routine_odd(philo);
-		pthread_mutex_lock(&philo->sdata->finished);
-		is_finished = philo->sdata->all_finished;
-		pthread_mutex_unlock(&philo->sdata->finished);
+		pthread_mutex_lock(&philo->sdata->meals);
+		is_finished = philo->finshed;
+		pthread_mutex_unlock(&philo->sdata->meals);
 	}
 	return (NULL);
 }
