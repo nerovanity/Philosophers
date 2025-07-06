@@ -6,7 +6,7 @@
 /*   By: ihamani <ihamani@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 01:07:18 by ihamani           #+#    #+#             */
-/*   Updated: 2025/07/05 15:03:01 by ihamani          ###   ########.fr       */
+/*   Updated: 2025/07/06 09:52:10 by ihamani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	philo_init(t_philo *philo, t_sdata *sdata)
 	i = 0;
 	sdata->forks = malloc(sizeof(pthread_mutex_t) * sdata->number_of_philo);
 	if (!sdata->forks)
-		return (write(2, "Malloc\n", 7), 1);
+		return (write(2, "Malloc failed\n", 7), 1);
 	memset(sdata->forks, 0, sizeof(pthread_mutex_t) * sdata->number_of_philo);
 	if (init_mutex(sdata) == 1)
 		return (1);
@@ -70,6 +70,7 @@ bool	check_is_dead(t_philo *philo)
 	pthread_mutex_lock(&philo->sdata->is_dead);
 	if (n > (size_t)philo->sdata->time_to_die)
 	{
+		usleep(1000);
 		pthread_mutex_lock(&philo->sdata->print);
 		printf("%ld %d died\n", time_getter(1), philo->id + 1);
 		pthread_mutex_unlock(&philo->sdata->print);
@@ -116,7 +117,7 @@ int	main(int ac, char **av)
 		return (1);
 	m.philo = malloc(sizeof(t_philo) * m.sdata.number_of_philo);
 	if (!m.philo)
-		return (write(2, "Malloc\n", 7), 1);
+		return (write(2, "Malloc failed\n", 7), 1);
 	memset(m.philo, 0, sizeof(t_philo) * m.sdata.number_of_philo);
 	time_getter(0);
 	if (philo_init(m.philo, &m.sdata) == 1)
